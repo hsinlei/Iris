@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReactiveList } from '@appbaseio/reactivesearch';
+//import { ReactiveList } from '@appbaseio/reactivesearch';
 import PropTypes from 'prop-types';
 
 import ResultItem, { resultItemDetails } from '../styles/ResultItem';
@@ -42,6 +42,7 @@ const renderResultStats = ({ numberOfResults, time }) => (
 
 const onData = data => (
 	<ResultItem key={data._id}>
+	{ console.log(data)}
 		<div dangerouslySetInnerHTML={{ __html: data.title }} />
 		<div dangerouslySetInnerHTML={{ __html: data.text }} />
 		<Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
@@ -71,18 +72,52 @@ const onData = data => (
 		</Flex>
 	</ResultItem>
 );
-
+const data = {
+by: "scootklein",
+highlight: {},
+id: "11004454",
+p_type: "job",
+parent: 0,
+score: "1",
+text: "",
+time: "1454198578",
+title: "StatusPage (YC S13) Is Hiring Rails Engineers in SF and Denver",
+url: "https://www.statuspage.io/careers",
+_id: "AV0xh-GK5TqtMYnFEJCl",
+_index: "hackernews-live",
+_score: 1,
+_type: "hackernews-live"};
 const Results = () => (
-	<ReactiveList
-		componentId="results"
-		dataField="title"
-		renderItem={onData}
-		renderResultStats={renderResultStats}
-		react={{
-			and: ['title', 'category', 'time'],
-		}}
-		pagination
-	/>
+	<ResultItem key={0}>
+	{ }
+		<div dangerouslySetInnerHTML={{ __html: data.title }} />
+		<div dangerouslySetInnerHTML={{ __html: data.text }} />
+		<Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
+			{!!data.parent && (
+				<FlexChild>
+					parent{' '}
+					<Link
+						href={`https://news.ycombinator.com/item?id=${data.parent}`}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{data.parent}
+					</Link>
+				</FlexChild>
+			)}
+			<FlexChild>{data.score} points</FlexChild>
+			<FlexChild>
+				<Link
+					href={`https://news.ycombinator.com/user?id=${data.by}`}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					{data.by}
+				</Link>
+			</FlexChild>
+			<FlexChild>{timeSince(new Date(data.time * 1000))} ago</FlexChild>
+		</Flex>
+	</ResultItem>
 );
 
 onData.propTypes = {

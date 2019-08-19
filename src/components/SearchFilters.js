@@ -10,22 +10,7 @@ import Flex, { FlexChild } from '../styles/Flex';
 const SearchFilters = () => (
 	<Flex responsive style={{ padding: '1rem' }}>
 		<FlexChild flex={2}>
-			<DataSearch
-				componentId="title"
-				dataField={['title', 'text']}
-				highlight
-				customHighlight={() => ({
-					highlight: {
-						pre_tags: ['<mark>'],
-						post_tags: ['</mark>'],
-						fields: {
-							text: {},
-							title: {},
-						},
-						number_of_fragments: 0,
-					},
-				})}
-			/>
+			
 		</FlexChild>
 		<FlexChild flex={1}>
 			<SingleDropdownList
