@@ -1,0 +1,23 @@
+<!-- <script async src="https://cse.google.com/cse.js?cx=008518891864161743594:5lv7n5p4qru"></script>
+<div class="gcse-search"></div> -->
+
+<html>
+  <head>
+    <title>Iris</title>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script>
+      function hndlr(response) {
+      for (var i = 0; i < response.items.length; i++) {
+        var item = response.items[i];
+        // in production code, item.htmlTitle should have the HTML entities escaped.
+        document.getElementById("content").innerHTML += "<br>" + item.htmlTitle;
+      }
+    }
+    </script>
+    <!-- replace my key with a global config file -->
+    <script src="https://www.googleapis.com/customsearch/v1?key=AIzaSyBTdqfxtLNaSAayXLeWif0NVKRItScdrp0&cx=008518891864161743594:5lv7n5p4qru&q=brain&callback=hndlr">
+    </script>
+  </body>
+</html>
