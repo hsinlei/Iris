@@ -14,10 +14,14 @@
         "@storybook/theming": "^5.0.0",
         "axios": "^0.19.0",
         "emotion": "*",
+        "morgan": "^1.9.1",
+        "nodemon": "^1.19.1",
+        "pg": "^7.12.1",
         "prop-types": "^15.6.0",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
-        "react-emotion": "*"
+        "react-emotion": "*",
+        "server.js": "^1.0.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
