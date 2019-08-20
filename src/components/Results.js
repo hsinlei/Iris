@@ -131,7 +131,8 @@ componentDidMount() {
 		this.setState(prevState => {
 			return {numUpvotes: prevState.numUpvotes + op}
 		});
-		const request = new Request('http://localhost:8002/api/save', {
+		//TODO: need an 'un save handler too'
+		const request = new Request('http://localhost:8002/api/save', { 
 			method: 'POST',
 			headers: new Headers({ 'Content-Type': 'application/json' }),
 			body: JSON.stringify({post_id: 1, user_id: 2})

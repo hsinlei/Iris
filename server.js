@@ -11,20 +11,6 @@ let pool = new pg.Pool({
 	database: 'postgres'
 });
 
-pool.connect((err, db, done) => {
-	if (err) {
-		return console.log(err);
-	} else {
-		db.query('SELECT * FROM testtable1', (err, table) => {
-			if (err) {
-				return console.log(err);
-			} else {
-				// console.log(table);
-			}
-		});
-	}
-});
-
 let app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -79,6 +65,7 @@ app.post('/api/save', function(request, response) {
 
 app.listen(PORT, () => console.log('Listening on port ' + PORT));
 
+// Examples 
 const getTableData = (req, res, db) => {
   db.select('*').from('testtable1')
     .then(items => {
