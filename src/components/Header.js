@@ -3,7 +3,7 @@ import React from 'react';
 import Navbar from '../styles/Navbar';
 
 const Header = () => (
-	<Navbar>Tech News</Navbar>
+	<Navbar>iris</Navbar>
 );
 
 export default Header;

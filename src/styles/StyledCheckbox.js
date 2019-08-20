@@ -21,7 +21,7 @@ let basic = css`
   display: inline-block;
   width: 16px;
   height: 16px;
-  background: papayawhip;
+  background: #e3f2fd;
   border-radius: 3px;
 `;
 
@@ -29,7 +29,7 @@ let important = css`
   display: inline-block;
   width: 16px;
   height: 16px;
-  background: salmon;
+  background: #2196f3;
   border-radius: 3px;
 `;
 

@@ -4,43 +4,99 @@ import {
 	SingleDropdownList,
 	SingleDropdownRange,
 } from '@appbaseio/reactivesearch';
+import axios from 'axios';
+import Results from './Results';
+import sample from './sample'
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import SearchIcon from '@material-ui/icons/Search';
 
 import Flex, { FlexChild } from '../styles/Flex';
 
-const SearchFilters = () => (
+class SearchFilters extends React.Component {
+	constructor(){
+		super();
+	  	this.state = {
+    checked: false,
+    data: sample,
+    searchText: '',
+    dataLoaded: false
+  }
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSearchText = this.handleSearchText.bind(this);
+	}
+	  handleSubmit(event) {
+	    event.preventDefault();
+	    const params = new FormData(event.target);
+	    console.log(params);
+	   //  var datar = { key: 'AIzaSyBTdqfxtLNaSAayXLeWif0NVKRItScdrp0',
+	   //  	q: params.get('q'),
+				// cx: params.get('cx')}
+	    // fetch('/api/form-submit-url', {
+	    //   method: 'POST',
+	    //   body: data,
+	    // });
+	    var query = params.get('q');
+	    query = this.state.searchText;
+	    axios({
+		    method: 'GET',
+		    url: 'https://www.googleapis.com/customsearch/v1?key=AIzaSyBTdqfxtLNaSAayXLeWif0NVKRItScdrp0&cx=008518891864161743594:5lv7n5p4qru&q=' + query
+		  })
+		  // Saves the data to state. Only way to change the state is with setState
+		  .then(data => {
+		    this.setState({
+		      data: data.data,
+		      dataLoaded: true
+		    });
+		    console.log(this.state.data);
+		  })
+		  // logs an error
+		  .catch(err => {
+		    console.log(err);
+		  });
+	  }
+	handleSearchText(event) {
+    this.setState({searchText: event.target.value});
+    console.log(this.state.searchText)
+  }
+	render() {
+		return(
+			<div>
+			<form style={{width:'100%',margin:10}} title = "Search Form" onSubmit={this.handleSubmit}>
 	<Flex responsive style={{ padding: '1rem' }}>
-		<FlexChild flex={2}>
-			<form method = "get" title = "Search Form" action="https://cse.google.com/cse/publicurl">
-			 <div>
-			    <input type="text" id="q" name="q" title="Search this site" alt="Search Text" maxlength="256" />
-			    <input type="hidden" id="cx" name="cx" value="008518891864161743594:5lv7n5p4qru" />
-			   <input type="image" id="searchSubmit" name="submit" src="https://www.flaticon.com/free-icon/active-search-symbol_34148" alt="Search" title="Submit Search Query" />
-			 </div>
-			</form>
-		</FlexChild>
-		<FlexChild flex={1}>
-			<SingleDropdownList
-				componentId="category"
-				dataField="p_type"
-				placeholder="Select Category"
-				react={{
-					and: 'title',
-				}}
-			/>
-		</FlexChild>
-		<FlexChild flex={1}>
-			<SingleDropdownRange
-				componentId="time"
-				dataField="time"
-				data={[
-					{ start: 'now-6M', end: 'now', label: 'Last 6 months' },
-					{ start: 'now-1y', end: 'now', label: 'Last year' },
-					{ start: 'now-10y', end: 'now', label: 'All time' },
-				]}
-				placeholder="Select Time"
-			/>
-		</FlexChild>
+		<FlexChild style={{width:'80%'}}><TextField
+	        id='q'
+	        style={{ margin: 8 }}
+	        placeholder="Search"
+	        fullWidth
+	        value={this.state.searchText}
+	        margin="normal"
+	        variant="outlined"
+	        onChange={this.handleSearchText}
+	        InputLabelProps={{
+	          shrink: true,
+	        }}
+	      />
+      </FlexChild>
+      <FlexChild>
+		<Button type="submit"
+	        style={{ margin: 8, padding:15, fill:'#000000'}}>
+	      <SearchIcon color="primary"/>
+	        </Button>
+				    <input type="hidden" id="cx" name="cx" value="008518891864161743594:5lv7n5p4qru" />
+	  </FlexChild>
 	</Flex>
+			</form>
+
+      <div responsive style={{ padding: '1rem' }}>
+      	{this.state.data.items.map(function(d, idx){
+         return (<Results key={idx} title={d.title} data={d}/>)
+       })}
+      </div>
+      </div>
+
 );
+	}
+}
 
 export default SearchFilters;

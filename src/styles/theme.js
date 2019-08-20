@@ -3,7 +3,7 @@ const theme = {
 		fontFamily: 'Lato, Helvetica, sans-serif',
 	},
 	colors: {
-		primaryColor: 'coral',
+		primaryColor: '#3F51B5',
 	},
 };
 

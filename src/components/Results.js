@@ -93,8 +93,9 @@ _type: "hackernews-live"};
 
 
 class Results extends React.Component {
-	constructor() {
-  super();
+	constructor(props) {
+        super(props);
+
   // Define state
   this.state = {
     checked: false,
@@ -103,25 +104,6 @@ class Results extends React.Component {
   }
 }
 
-// Is called when the component succesfully loads
-componentDidMount() {
-  // GET request to our server
-  axios({
-    method: 'GET',
-    url: '/api/quotes'
-  })
-  // Saves the data to state. Only way to change the state is with setState
-  .then(data => {
-    this.setState({
-      numUpvotes: data.numUpvotes,
-      dataLoaded: true
-    });
-  })
-  // logs an error
-  .catch(err => {
-    console.log(err);
-  });
-}
 	handleCheckboxChange = event => {
 		this.setState({checked: event.target.checked});
 		var op = -1;
@@ -146,8 +128,8 @@ componentDidMount() {
 					<div> {this.state.numUpvotes} </div>
 					</FlexChild>
 				<FlexChild>
-				<div dangerouslySetInnerHTML={{ __html: data.title }} />
-				<div dangerouslySetInnerHTML={{ __html: data.text }} />
+				<Link href={this.props.data.link}> {this.props.data.title} </Link>
+				<div dangerouslySetInnerHTML={{ __html: this.props.data.snippet }} />
 				<Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
 
 
@@ -155,7 +137,7 @@ componentDidMount() {
 						<FlexChild>
 							parent{' '}
 							<Link
-								href={`https://news.ycombinator.com/item?id=${data.parent}`}
+								href={this.props.data.link}
 								target="_blank"
 								rel="noopener noreferrer"
 							>
