@@ -13,6 +13,7 @@
         var item = response.items[i];
         // in production code, item.htmlTitle should have the HTML entities escaped.
         document.getElementById("content").innerHTML += "<br>" + item.htmlTitle;
+        console.log(item);
       }
     }
     </script>
