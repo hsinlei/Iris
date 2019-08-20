@@ -113,7 +113,7 @@ componentDidMount() {
   // Saves the data to state. Only way to change the state is with setState
   .then(data => {
     this.setState({
-      quotes: data.data.data,
+      numUpvotes: data.numUpvotes,
       dataLoaded: true
     });
   })
