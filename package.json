@@ -6,10 +6,11 @@
     "author": "Divyanshu Maithani <div.blackcat@gmail.com>",
     "license": "Apache-2.0",
     "dependencies": {
-        "@storybook/theming": "^5.0.0",
         "@appbaseio/reactivesearch": "^3.0.0-rc.26",
         "@emotion/core": "^10.0.16",
         "@emotion/style": "^0.8.0",
+        "@storybook/theming": "^5.0.0",
+        "axios": "^0.19.0",
         "emotion": "*",
         "prop-types": "^15.6.0",
         "react": "^16.2.0",

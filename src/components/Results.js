@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 
 import ResultItem, { resultItemDetails } from '../styles/ResultItem';
 import Flex, { FlexChild } from '../styles/Flex';
+import Checkbox from '../styles/Checkbox'
 import Link from '../styles/Link';
+import axios from 'axios';
 
 function timeSince(date) {
 	const seconds = Math.floor((new Date() - date) / 1000);
@@ -43,6 +45,7 @@ const renderResultStats = ({ numberOfResults, time }) => (
 const onData = data => (
 	<ResultItem key={data._id}>
 	{ console.log(data)}
+
 		<div dangerouslySetInnerHTML={{ __html: data.title }} />
 		<div dangerouslySetInnerHTML={{ __html: data.text }} />
 		<Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
@@ -87,38 +90,97 @@ _id: "AV0xh-GK5TqtMYnFEJCl",
 _index: "hackernews-live",
 _score: 1,
 _type: "hackernews-live"};
-const Results = () => (
-	<ResultItem key={0}>
-	{ }
-		<div dangerouslySetInnerHTML={{ __html: data.title }} />
-		<div dangerouslySetInnerHTML={{ __html: data.text }} />
-		<Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
-			{!!data.parent && (
+
+
+class Results extends React.Component {
+	constructor() {
+  super();
+  // Define state
+  this.state = {
+    checked: false,
+    numUpvotes:457,
+    dataLoaded: false
+  }
+}
+
+// Is called when the component succesfully loads
+componentDidMount() {
+  // GET request to our server
+  axios({
+    method: 'GET',
+    url: '/api/quotes'
+  })
+  // Saves the data to state. Only way to change the state is with setState
+  .then(data => {
+    this.setState({
+      quotes: data.data.data,
+      dataLoaded: true
+    });
+  })
+  // logs an error
+  .catch(err => {
+    console.log(err);
+  });
+}
+	handleCheckboxChange = event => {
+		this.setState({checked: event.target.checked});
+		var op = -1;
+		if (event.target.checked) {
+			op = 1;
+		}
+		this.setState(prevState => {
+			return {numUpvotes: prevState.numUpvotes + op}
+		});
+	};
+	render() {
+		return (
+			<ResultItem key={0}>
+			<Flex>
+					<FlexChild>
+					<label>
+						<Checkbox checked={this.state.checked} 
+								onChange={this.handleCheckboxChange}
+						/>
+					</label>
+
+					<div> {this.state.numUpvotes} </div>
+					</FlexChild>
 				<FlexChild>
-					parent{' '}
-					<Link
-						href={`https://news.ycombinator.com/item?id=${data.parent}`}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						{data.parent}
-					</Link>
+				<div dangerouslySetInnerHTML={{ __html: data.title }} />
+				<div dangerouslySetInnerHTML={{ __html: data.text }} />
+				<Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
+
+
+					{!!data.parent && (
+						<FlexChild>
+							parent{' '}
+							<Link
+								href={`https://news.ycombinator.com/item?id=${data.parent}`}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{data.parent}
+							</Link>
+						</FlexChild>
+					)}
+					<FlexChild>{data.score} points</FlexChild>
+					<FlexChild>
+						<Link
+							href={`https://news.ycombinator.com/user?id=${data.by}`}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							{data.by}
+						</Link>
+					</FlexChild>
+					<FlexChild>{timeSince(new Date(data.time * 1000))} ago</FlexChild>
+				</Flex>
 				</FlexChild>
-			)}
-			<FlexChild>{data.score} points</FlexChild>
-			<FlexChild>
-				<Link
-					href={`https://news.ycombinator.com/user?id=${data.by}`}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					{data.by}
-				</Link>
-			</FlexChild>
-			<FlexChild>{timeSince(new Date(data.time * 1000))} ago</FlexChild>
-		</Flex>
-	</ResultItem>
-);
+				</Flex>
+			</ResultItem>
+		)
+	}
+}
 
 onData.propTypes = {
 	_source: PropTypes.object, // eslint-disable-line
