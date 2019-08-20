@@ -131,8 +131,44 @@ componentDidMount() {
 		this.setState(prevState => {
 			return {numUpvotes: prevState.numUpvotes + op}
 		});
+		const request = new Request('http://localhost:8002/api/save', {
+			method: 'POST',
+			headers: new Headers({ 'Content-Type': 'application/json' }),
+			body: JSON.stringify({post_id: 1, user_id: 2})
+		});
+		fetch(request)
+			.then(function(response) {
+				response.json()
+					.then(function(data) {
+						console.log('data: ');
+						console.log(data);
+					});
+			})
+			.catch(function(err) {
+				console.log('caught :' + err);
+			});
 	};
 	render() {
+		const post_id = 1;
+		const request = new Request('http://localhost:8002/api/getsavedcount', {
+			method: 'POST',
+			headers: new Headers({ 'Content-Type': 'application/json' }),
+			body: JSON.stringify({post_id: post_id})
+		});
+		fetch(request)
+			.then(function(response) {
+				response.json()
+					.then(function(data) {
+						console.log('data: ');
+						console.log(data);
+						this.setState({
+							numUpvotes: data.saved
+						});
+					});
+			})
+			.catch(function(err) {
+				console.log('caught :' + err);
+			});
 		return (
 			<ResultItem key={0}>
 			<Flex>
