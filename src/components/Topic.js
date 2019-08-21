@@ -8,7 +8,7 @@ import Link, {SmallLink} from '../styles/Link';
 import axios from 'axios';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import TopicLink from '../styles/TopicLink';
+import TopicLink from './TopicLink';
 
 function timeSince(date) {
   const seconds = Math.floor((new Date() - date) / 1000);
@@ -68,7 +68,7 @@ class Topic extends React.Component {
 					<FlexChild>
 						<Link href={"www.google.com"}> {this.props.data.topicName} </Link>
             {this.props.data.titles.map(function(d, idx){
-         return (<TopicLink style={{color:"#616161"}}> {d}</TopicLink>)
+         return (<TopicLink key={idx} data={d} style={{color:"#616161"}}/>)
        })}
 
 						<Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
