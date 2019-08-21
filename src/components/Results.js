@@ -97,7 +97,7 @@ class Results extends React.Component {
   constructor(props) {
     super(props);
 
-    // Define state
+    // Define state numUpvotes, checked, and dataLoaded
     const post_id = 1;
     const request = new Request("http://localhost:8002/api/getsavedcount", {
       method: "POST",
@@ -108,9 +108,6 @@ class Results extends React.Component {
     fetch(request)
       .then(response => {
         response.json().then(data => {
-          console.log("data: ");
-          // data and response is both empty here
-          console.log(data.saved);
           this.setState({
             numUpvotes: data.saved
           });
@@ -122,7 +119,6 @@ class Results extends React.Component {
 
     this.state = {
       checked: false,
-      numUpvotes: 457, // why is this not updated
       dataLoaded: false
     };
   }
@@ -136,11 +132,12 @@ class Results extends React.Component {
     this.setState(prevState => {
       return { numUpvotes: +prevState.numUpvotes + op };
     });
-    //TODO: need an 'un save handler too'
+
     const request = new Request("http://localhost:8002/api/save", {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ post_id: 1, user_id: 2 })
+      // TODO - update to dynamically render each node
+      body: JSON.stringify({ post_id: this.props.data.key, user_id: 2 })
     });
     fetch(request)
       .then(function(response) {
