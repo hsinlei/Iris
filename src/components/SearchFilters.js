@@ -90,7 +90,7 @@ class SearchFilters extends React.Component {
 
       <div responsive style={{ padding: '1rem', maxWidth:'800px' }}>
       	{this.state.data.items.map(function(d, idx){
-         return (<Results key={idx} title={d.title} data={d}/>)
+         return (<Results key={idx} data={d}/>)
        })}
       </div>
       </div>

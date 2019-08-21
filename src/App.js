@@ -9,6 +9,9 @@ import SearchFilters from './components/SearchFilters';
 import Container from './styles/Container';
 import SearchContainer from './styles/SearchContainer';
 import Main from './styles/Main';
+import Topic from './components/Topic'
+import topics from "./components/sampleTopics";
+import Flex, { FlexChild, alignCenter } from './styles/Flex';
 
 const App = () => (
 	<Main>
@@ -20,9 +23,13 @@ const App = () => (
 			>
 				<Header />
 				<SearchContainer>
-					<SearchFilters />
 				</SearchContainer>
 			</ReactiveBase>
+		</Container>
+		<Container style={{fontFamily: 'Lato, Helvetica, sans-serif'}}>
+		{topics.map(function(d, idx){
+         return (<Topic key={idx} data={d}/>)
+       })}
 		</Container>
 	</Main>
 );
