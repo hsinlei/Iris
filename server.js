@@ -26,14 +26,14 @@ app.use(function(request, response, next) {
 });
 
 app.post("/api/getsavedcount", function(request, response) {
-  var post_id = parseInt(request.body.post_id, 10);
-  console.log("request post_id = " + post_id);
+  console.log("request post_id = " + request.body.post_id);
   pool.connect((err, db, done) => {
+    done();
     if (err) {
       return console.log(err);
     } else {
       db.query(
-        "SELECT COUNT(*) FROM saves WHERE post_id = " + post_id,
+        "SELECT COUNT(*) FROM saves WHERE post_id = " + request.body.post_id,
         (err, table) => {
           if (err) {
             return console.log(err);
@@ -48,11 +48,43 @@ app.post("/api/getsavedcount", function(request, response) {
   });
 });
 
+app.post("/api/checksaved", function(request, response) {
+  console.log(
+    "request post_id = " +
+      request.body.post_id +
+      " user_id = " +
+      request.body.user_id
+  );
+  pool.connect((err, db, done) => {
+    done();
+    if (err) {
+      return console.log(err);
+    } else {
+      db.query(
+        "SELECT COUNT(*) FROM saves WHERE post_id = " +
+          request.body.post_id +
+          " AND user_id = " +
+          request.body.user_id,
+        (err, table) => {
+          if (err) {
+            return console.log(err);
+          } else {
+            console.log("query succeeded");
+            console.log(table);
+            response.status(200).send({ count: table.rows[0].count });
+          }
+        }
+      );
+    }
+  });
+});
+
 app.post("/api/save", function(request, response) {
   var post_id = request.body.post_id;
   var user_id = request.body.user_id;
-  console.log("request post_id = " + post_id + ", user_id" + user_id);
+  console.log("inserting post_id = " + post_id + ", user_id" + user_id);
   pool.connect((err, db, done) => {
+    done();
     if (err) {
       return console.log(err);
     } else {
@@ -66,7 +98,35 @@ app.post("/api/save", function(request, response) {
           if (err) {
             return console.log(err);
           } else {
-            console.log("query succeeded");
+            console.log("insert succeeded");
+            console.log(table);
+            response.status(200).send({ message: "succeeded" });
+          }
+        }
+      );
+    }
+  });
+});
+
+app.post("/api/unsave", function(request, response) {
+  var post_id = request.body.post_id;
+  var user_id = request.body.user_id;
+  console.log("deleting post_id = " + post_id + ", user_id" + user_id);
+  pool.connect((err, db, done) => {
+    done();
+    if (err) {
+      return console.log(err);
+    } else {
+      db.query(
+        "DELETE FROM saves WHERE post_id = " +
+          post_id +
+          " AND user_id = " +
+          user_id,
+        (err, table) => {
+          if (err) {
+            return console.log(err);
+          } else {
+            console.log("delete succeeded");
             console.log(table);
             response.status(200).send({ message: "succeeded" });
           }

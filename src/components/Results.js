@@ -94,15 +94,41 @@ const data = {
 };
 
 class Results extends React.Component {
-  constructor(props) {
-    super(props);
-
+  fetch_counts() {
+    console.log("fetch_ocounts");
     // Define state numUpvotes, checked, and dataLoaded
-    const post_id = 1;
     const request = new Request("http://localhost:8002/api/getsavedcount", {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ post_id: post_id })
+      body: JSON.stringify({ post_id: this.props.id })
+    });
+
+    fetch(request)
+      .then(response => {
+        response.json().then(data => {
+          this.setState({
+            numUpvotes: data.saved
+          });
+        });
+      })
+      .catch(function(err) {
+        console.log("caught :" + err);
+      });
+  }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      checked: false,
+      dataLoaded: false,
+      numUpvotes: 0
+    };
+
+    // Define state numUpvotes, checked, and dataLoaded
+    const request = new Request("http://localhost:8002/api/getsavedcount", {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify({ post_id: props.id })
     });
 
     fetch(request)
@@ -117,27 +143,50 @@ class Results extends React.Component {
         console.log("caught :" + err);
       });
 
-    this.state = {
-      checked: false,
-      dataLoaded: false
-    };
+    const check_state_request = new Request(
+      "http://localhost:8002/api/checksaved",
+      {
+        method: "POST",
+        headers: new Headers({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ post_id: props.id, user_id: 2 })
+      }
+    );
+    fetch(check_state_request)
+      .then(response => {
+        response.json().then(data => {
+          this.setState({
+            checked: data.count > 0
+          });
+        });
+      })
+      .catch(function(err) {
+        console.log("caught :" + err);
+      });
+    // window.setInterval(this.fetch_counts.bind(this), 5000);
   }
 
   handleCheckboxChange = event => {
-    this.setState({ checked: event.target.checked });
-    var op = -1;
-    if (event.target.checked) {
-      op = 1;
-    }
+    const old_state = this.state.checked;
+    console.log("old statet = " + old_state);
+    const op = old_state ? -1 : 1;
+    const end_point = old_state
+      ? "http://localhost:8002/api/unsave"
+      : "http://localhost:8002/api/save";
     this.setState(prevState => {
-      return { numUpvotes: +prevState.numUpvotes + op };
+      return {
+        numUpvotes: +prevState.numUpvotes + op,
+        checked: !prevState.checked
+      };
     });
 
-    const request = new Request("http://localhost:8002/api/save", {
+    const request = new Request(end_point, {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
-      // TODO - update to dynamically render each node
-      body: JSON.stringify({ post_id: this.props.data.key, user_id: 2 })
+      // use hashcode
+      body: JSON.stringify({
+        post_id: this.props.id,
+        user_id: 2
+      })
     });
     fetch(request)
       .then(function(response) {
