@@ -104,12 +104,13 @@ class Results extends React.Component {
       headers: new Headers({ "Content-Type": "application/json" }),
       body: JSON.stringify({ post_id: post_id })
     });
+
     fetch(request)
-      .then(function(response) {
-        response.json().then(function(data) {
+      .then(response => {
+        response.json().then(data => {
           console.log("data: ");
           // data and response is both empty here
-          console.log(data, response);
+          console.log(JSON.stringify(data));
           this.setState({
             numUpvotes: data.saved
           });
