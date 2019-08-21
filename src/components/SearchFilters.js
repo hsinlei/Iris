@@ -63,32 +63,32 @@ class SearchFilters extends React.Component {
 		return(
 			<div>
 			<form style={{width:'100%',margin:10}} title = "Search Form" onSubmit={this.handleSubmit}>
-	<Flex responsive style={{ padding: '1rem' }}>
-		<FlexChild style={{width:'80%'}}><TextField
-	        id='q'
-	        style={{ margin: 8 }}
-	        placeholder="Search"
-	        fullWidth
-	        value={this.state.searchText}
-	        margin="normal"
-	        variant="outlined"
-	        onChange={this.handleSearchText}
-	        InputLabelProps={{
-	          shrink: true,
-	        }}
-	      />
-      </FlexChild>
-      <FlexChild>
-		<Button type="submit"
-	        style={{ margin: 8, padding:15, fill:'#000000'}}>
-	      <SearchIcon color="primary"/>
-	        </Button>
-				    <input type="hidden" id="cx" name="cx" value="008518891864161743594:5lv7n5p4qru" />
-	  </FlexChild>
-	</Flex>
+				<Flex responsive style={{ padding: '1rem' }}>
+					<FlexChild style={{width:'80%'}}><TextField
+				        id='q'
+				        style={{ margin: 8 }}
+				        placeholder="Search"
+				        fullWidth
+				        value={this.state.searchText}
+				        margin="normal"
+				        variant="outlined"
+				        onChange={this.handleSearchText}
+				        InputLabelProps={{
+				          shrink: true,
+				        }}
+				      />
+			      </FlexChild>
+			      <FlexChild>
+					<Button type="submit"
+				        style={{ margin: 8, padding:15, fill:'#000000'}}>
+				      <SearchIcon color="primary"/>
+				        </Button>
+							    <input type="hidden" id="cx" name="cx" value="008518891864161743594:5lv7n5p4qru" />
+				  </FlexChild>
+				</Flex>
 			</form>
 
-      <div responsive style={{ padding: '1rem' }}>
+      <div responsive style={{ padding: '1rem', maxWidth:'800px' }}>
       	{this.state.data.items.map(function(d, idx){
          return (<Results key={idx} title={d.title} data={d}/>)
        })}

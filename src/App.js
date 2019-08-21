@@ -7,6 +7,7 @@ import Header from './components/Header';
 import SearchFilters from './components/SearchFilters';
 
 import Container from './styles/Container';
+import SearchContainer from './styles/SearchContainer';
 import Main from './styles/Main';
 
 const App = () => (
@@ -18,7 +19,9 @@ const App = () => (
 				theme={theme}
 			>
 				<Header />
-				<SearchFilters />
+				<SearchContainer>
+					<SearchFilters />
+				</SearchContainer>
 			</ReactiveBase>
 		</Container>
 	</Main>

@@ -29,7 +29,7 @@ let important = css`
   display: inline-block;
   width: 16px;
   height: 16px;
-  background: #2196f3;
+  background: #80deea;
   border-radius: 3px;
 `;
 
