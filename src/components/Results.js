@@ -75,21 +75,23 @@ const onData = data => (
 		</Flex>
 	</ResultItem>
 );
+
 const data = {
-by: "scootklein",
-highlight: {},
-id: "11004454",
-p_type: "job",
-parent: 0,
-score: "1",
-text: "",
-time: "1454198578",
-title: "StatusPage (YC S13) Is Hiring Rails Engineers in SF and Denver",
-url: "https://www.statuspage.io/careers",
-_id: "AV0xh-GK5TqtMYnFEJCl",
-_index: "hackernews-live",
-_score: 1,
-_type: "hackernews-live"};
+	by: "scootklein",
+	highlight: {},
+	id: "11004454",
+	p_type: "job",
+	parent: 0,
+	score: "1",
+	text: "",
+	time: "1454198578",
+	title: "StatusPage (YC S13) Is Hiring Rails Engineers in SF and Denver",
+	url: "https://www.statuspage.io/careers",
+	_id: "AV0xh-GK5TqtMYnFEJCl",
+	_index: "hackernews-live",
+	_score: 1,
+	_type: "hackernews-live"
+};
 
 
 class Results extends React.Component {
@@ -97,9 +99,31 @@ class Results extends React.Component {
         super(props);
 
   // Define state
+  const post_id = 1;
+		const request = new Request('http://localhost:8002/api/getsavedcount', {
+			method: 'POST',
+			headers: new Headers({ 'Content-Type': 'application/json' }),
+			body: JSON.stringify({post_id: post_id})
+		});
+		fetch(request)
+			.then(function(response) {
+				response.json()
+					.then(function(data) {
+						console.log('data: ');
+						// data and response is both empty here 
+						console.log(data, response);
+						this.setState({							
+							numUpvotes: data.saved
+						});
+					});
+			})
+			.catch(function(err) {
+				console.log('caught :' + err);
+			});
+
   this.state = {
     checked: false,
-    numUpvotes:457,
+    numUpvotes:457, // why is this not updated 
     dataLoaded: false
   }
 }
@@ -131,27 +155,7 @@ class Results extends React.Component {
 				console.log('caught :' + err);
 			});
 	};
-	render() {
-		const post_id = 1;
-		const request = new Request('http://localhost:8002/api/getsavedcount', {
-			method: 'POST',
-			headers: new Headers({ 'Content-Type': 'application/json' }),
-			body: JSON.stringify({post_id: post_id})
-		});
-		fetch(request)
-			.then(function(response) {
-				response.json()
-					.then(function(data) {
-						console.log('data: ');
-						console.log(data);
-						this.setState({
-							numUpvotes: data.saved
-						});
-					});
-			})
-			.catch(function(err) {
-				console.log('caught :' + err);
-			});
+	render() {		
 		return (
 			<ResultItem key={0}>
 			<Flex>
