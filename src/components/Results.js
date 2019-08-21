@@ -110,7 +110,7 @@ class Results extends React.Component {
         response.json().then(data => {
           console.log("data: ");
           // data and response is both empty here
-          console.log(JSON.stringify(data));
+          console.log(data.saved);
           this.setState({
             numUpvotes: data.saved
           });
@@ -134,7 +134,7 @@ class Results extends React.Component {
       op = 1;
     }
     this.setState(prevState => {
-      return { numUpvotes: prevState.numUpvotes + op };
+      return { numUpvotes: +prevState.numUpvotes + op };
     });
     //TODO: need an 'un save handler too'
     const request = new Request("http://localhost:8002/api/save", {
