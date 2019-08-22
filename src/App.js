@@ -9,37 +9,15 @@ import Login from "./components/Login";
 import SearchFilters from "./components/SearchFilters";
 
 import Container from "./styles/Container";
-import Main from "./styles/Main";
 
-class Store {
-  constructor(initialState = { user_id: 0 }) {
-    this.state = initialState;
-  }
-  set_user_id(user_id) {
-    this.state.user_id = user_id;
-  }
-  get_user_id(user_id) {
-    return this.state.user_id;
-  }
-}
-
-const store = new Store();
+import Navigation from "./components/Navigation";
+import Main from "./components/Main";
 
 const App = () => (
-  <Main>
-    <Container>
-      <ReactiveBase
-        app="hackernews-live"
-        credentials="kxBY7RnNe:4d69db99-6049-409d-89bd-e1202a2ad48e"
-        theme={theme}
-      >
-        <Header />
-        <Users />
-        <Login store={store} />
-        <SearchFilters store={store} />
-      </ReactiveBase>
-    </Container>
-  </Main>
+  <div>
+    <Navigation />
+    <Main />
+  </div>
 );
 
 export default App;
