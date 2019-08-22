@@ -5,6 +5,7 @@ import theme from "./styles/theme";
 
 import Header from "./components/Header";
 import Users from "./components/User";
+import Login from "./components/Login";
 import SearchFilters from "./components/SearchFilters";
 
 import Container from "./styles/Container";
@@ -20,6 +21,7 @@ const App = () => (
       >
         <Header />
         <Users />
+        <Login />
         <SearchFilters />
       </ReactiveBase>
     </Container>

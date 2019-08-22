@@ -38,6 +38,7 @@ class SearchFilters extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSearchText = this.handleSearchText.bind(this);
   }
+
   handleSubmit(event) {
     event.preventDefault();
     const params = new FormData(event.target);

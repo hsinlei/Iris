@@ -31,7 +31,7 @@ app.use(function(request, response, next) {
   next();
 });
 
-// create a user (aka sign up)
+// create a user sign up
 app.post("/api/createuser", function(request, response) {
   console.log("creatuser requests = " + request.body.name);
   // check if the form data is valid
@@ -102,6 +102,56 @@ app.post("/api/getsavedcount", function(request, response) {
           }
         }
       );
+    }
+  });
+});
+
+// user login
+app.post("/api/loginuser", function(request, response) {
+  console.log("loginuser requests = " + request.body.email);
+  // check if the form data is valid
+  if (!request.body.email || !request.body.password) {
+    return response.status(401).send({ message: "Some values are missing" });
+  }
+  if (!Helper.isValidEmail(request.body.email)) {
+    return response
+      .status(402)
+      .send({ message: "Please enter a valid email address" });
+  }
+
+  const rows = `SELECT * FROM users WHERE email = '${request.body.email}`;
+  console.log(rows);
+
+  if (!rows[0]) {
+    return res
+      .status(400)
+      .send({ message: "The credentials you provided is incorrect" });
+  }
+
+  if (!Helper.comparePassword(rows[0].password, request.body.password)) {
+    return res
+      .status(400)
+      .send({ message: "The credentials you provided is incorrect" });
+  }
+
+  pool.connect((err, db, done) => {
+    done();
+    if (err) {
+      return console.log(err);
+    } else {
+      try {
+        // console.log("hi");
+        db.query(createQuery, (err, table) => {
+          if (err) {
+            return console.log(err);
+          } else {
+            return response.status(201).send({ id: table.rows[0].id });
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        return response.status(404).send(error);
+      }
     }
   });
 });
