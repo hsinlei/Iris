@@ -162,7 +162,6 @@ class Results extends React.Component {
       .catch(function(err) {
         console.log("caught :" + err);
       });
-    // window.setInterval(this.fetch_counts.bind(this), 5000);
   }
 
   handleCheckboxChange = event => {

@@ -3,7 +3,14 @@ let bodyParser = require("body-parser");
 let morgan = require("morgan");
 let pg = require("pg");
 let PORT = 8002;
+let Helper = require("./Helper").Helper;
+let moment = require("moment");
+// let dotenv = require("dotenv");
+// dotenv.config();
+// var path = require("path");
+// var UserWithDb = require(path.resolve(__dirname, "./User.js"));
 
+let app = express();
 let pool = new pg.Pool({
   port: 5432,
   max: 10,
@@ -11,7 +18,6 @@ let pool = new pg.Pool({
   database: "postgres"
 });
 
-let app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
@@ -25,8 +31,60 @@ app.use(function(request, response, next) {
   next();
 });
 
+// create a user (aka sign up)
+app.post("/api/createuser", function(request, response) {
+  console.log("creatuser requests = " + request.body.name);
+  // check if the form data is valid
+  if (!request.body.email || !request.body.password) {
+    return response.status(401).send({ message: "Some values are missing" });
+  }
+  if (!Helper.isValidEmail(request.body.email)) {
+    return response
+      .status(402)
+      .send({ message: "Please enter a valid email address" });
+  }
+
+  // for security purposes
+  const hashPassword = Helper.hashPassword(request.body.password);
+  const ts = new Date().getTime();
+  const createQuery = `INSERT INTO
+      users (name, email, password, created_date, modified_date)
+      VALUES ('${request.body.name}','${request.body.email}', '${hashPassword}', ${ts}, ${ts})
+      returning *`;
+
+  console.log(createQuery);
+  pool.connect((err, db, done) => {
+    done();
+    if (err) {
+      return console.log(err);
+    } else {
+      try {
+        // console.log("hi");
+        db.query(createQuery, (err, table) => {
+          if (err) {
+            return console.log(err);
+          } else {
+            return response.status(201).send({ id: table.rows[0].id });
+          }
+        });
+      } catch (error) {
+        if (error.routine === "_bt_check_unique") {
+          return response
+            .status(403)
+            .send({ message: "User with that EMAIL already exist" });
+        }
+        console.log(error);
+        return response.status(404).send(error);
+      }
+    }
+  });
+});
+
+// app.post("/api/v1/users/login", UserWithDb.login);
+// app.delete("/api/v1/users/me", Auth.verifyToken, UserWithDb.delete);
+
 app.post("/api/getsavedcount", function(request, response) {
-  console.log("request post_id = " + request.body.post_id);
+  // console.log("request post_id = " + request.body.post_id);
   pool.connect((err, db, done) => {
     done();
     if (err) {
@@ -38,8 +96,8 @@ app.post("/api/getsavedcount", function(request, response) {
           if (err) {
             return console.log(err);
           } else {
-            console.log("query succeeded");
-            console.log(table);
+            // console.log("query succeeded");
+            // console.log(table);
             response.status(200).send({ saved: table.rows[0].count });
           }
         }
@@ -49,12 +107,12 @@ app.post("/api/getsavedcount", function(request, response) {
 });
 
 app.post("/api/checksaved", function(request, response) {
-  console.log(
-    "request post_id = " +
-      request.body.post_id +
-      " user_id = " +
-      request.body.user_id
-  );
+  // console.log(
+  //   "request post_id = " +
+  //     request.body.post_id +
+  //     " user_id = " +
+  //     request.body.user_id
+  // );
   pool.connect((err, db, done) => {
     done();
     if (err) {
@@ -69,8 +127,8 @@ app.post("/api/checksaved", function(request, response) {
           if (err) {
             return console.log(err);
           } else {
-            console.log("query succeeded");
-            console.log(table);
+            // console.log("query succeeded");
+            // console.log(table);
             response.status(200).send({ count: table.rows[0].count });
           }
         }
