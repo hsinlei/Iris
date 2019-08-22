@@ -14,6 +14,7 @@
         "@storybook/theming": "^5.0.0",
         "axios": "^0.19.0",
         "emotion": "*",
+        "html-webpack-plugin": "^3.2.0",
         "morgan": "^1.9.1",
         "nodemon": "^1.19.1",
         "pg": "^7.12.1",
@@ -21,6 +22,7 @@
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
         "react-emotion": "*",
+        "react-router-dom": "^5.0.1",
         "server.js": "^1.0.0"
     },
     "devDependencies": {
