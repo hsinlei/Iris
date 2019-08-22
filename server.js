@@ -5,8 +5,6 @@ let pg = require("pg");
 let PORT = 8002;
 let Helper = require("./Helper").Helper;
 let moment = require("moment");
-// let dotenv = require("dotenv");
-// dotenv.config();
 // var path = require("path");
 // var UserWithDb = require(path.resolve(__dirname, "./User.js"));
 
@@ -119,20 +117,7 @@ app.post("/api/loginuser", function(request, response) {
       .send({ message: "Please enter a valid email address" });
   }
 
-  const rows = `SELECT * FROM users WHERE email = '${request.body.email}`;
-  console.log(rows);
-
-  if (!rows[0]) {
-    return res
-      .status(400)
-      .send({ message: "The credentials you provided is incorrect" });
-  }
-
-  if (!Helper.comparePassword(rows[0].password, request.body.password)) {
-    return res
-      .status(400)
-      .send({ message: "The credentials you provided is incorrect" });
-  }
+  const createQuery = `SELECT * FROM users WHERE email = '${request.body.email}'`;
 
   pool.connect((err, db, done) => {
     done();
@@ -145,7 +130,26 @@ app.post("/api/loginuser", function(request, response) {
           if (err) {
             return console.log(err);
           } else {
-            return response.status(201).send({ id: table.rows[0].id });
+            first_result = table.rows[0];
+            if (!first_result) {
+              return response
+                .status(400)
+                .send({ message: "The credentials you provided is incorrect" });
+            }
+
+            console.log("this is rows 0" + first_result);
+
+            if (
+              !Helper.comparePassword(
+                first_result.password,
+                request.body.password
+              )
+            ) {
+              return response
+                .status(400)
+                .send({ message: "The credentials you provided is incorrect" });
+            }
+            response.status(201).send({ user_id: first_result.id });
           }
         });
       } catch (error) {
@@ -157,12 +161,6 @@ app.post("/api/loginuser", function(request, response) {
 });
 
 app.post("/api/checksaved", function(request, response) {
-  // console.log(
-  //   "request post_id = " +
-  //     request.body.post_id +
-  //     " user_id = " +
-  //     request.body.user_id
-  // );
   pool.connect((err, db, done) => {
     done();
     if (err) {

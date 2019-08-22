@@ -11,6 +11,20 @@ import SearchFilters from "./components/SearchFilters";
 import Container from "./styles/Container";
 import Main from "./styles/Main";
 
+class Store {
+  constructor(initialState = { user_id: 0 }) {
+    this.state = initialState;
+  }
+  set_user_id(user_id) {
+    this.state.user_id = user_id;
+  }
+  get_user_id(user_id) {
+    return this.state.user_id;
+  }
+}
+
+const store = new Store();
+
 const App = () => (
   <Main>
     <Container>
@@ -21,8 +35,8 @@ const App = () => (
       >
         <Header />
         <Users />
-        <Login />
-        <SearchFilters />
+        <Login store={store} />
+        <SearchFilters store={store} />
       </ReactiveBase>
     </Container>
   </Main>

@@ -126,9 +126,10 @@ class SearchFilters extends React.Component {
                 id={d.link.hashCode()}
                 title={d.title}
                 data={d}
+                store={this.props.store}
               />
             );
-          })}
+          }, this)}
         </div>
       </div>
     );

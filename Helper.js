@@ -1,6 +1,9 @@
 let bcrypt = require("bcrypt");
 let jwt = require("jsonwebtoken");
 
+let dotenv = require("dotenv");
+dotenv.config();
+
 const Helper = {
   /**
    * Hash Password Method
