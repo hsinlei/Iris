@@ -30,14 +30,6 @@ class Topic extends React.Component {
 		return (
 			<ResultItem>
 				<Flex>
-					{/*<FlexChild justifyContent='center' alignItems='center' style={{flexDirection:'column', minHeight:'200px'}}>*/}
-					<FlexChild>
-						<CenterFlex>
-							<Fab aria-label="add" size='medium' style={{ boxShadow: 'none' }}>
-								{this.props.data.numTitles}
-							</Fab>
-						</CenterFlex>
-					</FlexChild>
 					<FlexChild style={{ padding: '10px 20px' }}>
 						<FlexChild><Link href={"www.google.com"}> {this.props.data.topicName} </Link></FlexChild>
 						{this.props.data.titles.map(function (d, idx) {

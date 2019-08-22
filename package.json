@@ -23,6 +23,7 @@
         "react-dom": "^16.2.0",
         "react-emotion": "*",
         "react-router-dom": "^5.0.1",
+        "react-vertical-timeline-component": "^2.4.0",
         "server.js": "^1.0.0"
     },
     "devDependencies": {
@@ -36,7 +37,9 @@
         "babel-preset-latest": "^6.24.1",
         "babel-preset-react": "^6.24.1",
         "babel-preset-stage-0": "^6.24.1",
+        "css-loader": "^3.2.0",
         "prettier": "^1.18.2",
+        "style-loader": "^1.0.0",
         "webpack": "^4.39.2",
         "webpack-cli": "^3.2.0",
         "webpack-dev-server": "^3.1.14"

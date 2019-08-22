@@ -8,73 +8,12 @@ import Link, {SmallLink} from '../styles/Link';
 import axios from 'axios';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-
-function timeSince(date) {
-  const seconds = Math.floor((new Date() - date) / 1000);
-
-  let interval = Math.floor(seconds / 31536000);
-
-  if (interval >= 1) {
-    const postfix = interval === 1 ? " year" : " years";
-    return interval + postfix;
-  }
-  interval = Math.floor(seconds / 2592000);
-  if (interval > 1) {
-    return `${interval} months`;
-  }
-  interval = Math.floor(seconds / 86400);
-  if (interval > 1) {
-    return `${interval} days`;
-  }
-  interval = Math.floor(seconds / 3600);
-  if (interval > 1) {
-    return `${interval} hours`;
-  }
-  interval = Math.floor(seconds / 60);
-  if (interval > 1) {
-    return `${interval} minutes`;
-  }
-  return `${Math.floor(seconds)} seconds`;
-}
+var timeSince = require('../utils').timeSince;
 
 const renderResultStats = ({ numberOfResults, time }) => (
   <Flex justifyContent="flex-end" style={{ padding: "0 1rem" }}>
     {numberOfResults} results found in {time}ms
   </Flex>
-);
-
-const onData = data => (
-  <ResultItem key={data._id}>
-    {console.log(data)}
-
-    <div dangerouslySetInnerHTML={{ __html: data.title }} />
-    <div dangerouslySetInnerHTML={{ __html: data.text }} />
-    <Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
-      {!!data.parent && (
-        <FlexChild>
-          parent{" "}
-          <Link
-            href={`https://news.ycombinator.com/item?id=${data.parent}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {data.parent}
-          </Link>
-        </FlexChild>
-      )}
-      <FlexChild>{data.score} points</FlexChild>
-      <FlexChild>
-        <Link
-          href={`https://news.ycombinator.com/user?id=${data.by}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {data.by}
-        </Link>
-      </FlexChild>
-      <FlexChild>{timeSince(new Date(data.time * 1000))} ago</FlexChild>
-    </Flex>
-  </ResultItem>
 );
 
 const data = {
@@ -294,8 +233,5 @@ class Results extends React.Component {
 		)
 	}
  }
-onData.propTypes = {
-  _source: PropTypes.object // eslint-disable-line
-};
 
 export default Results;
