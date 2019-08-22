@@ -16,4 +16,4 @@ const SearchResult = () => (
     </ReactiveBase>
 );
 
-export default SearchResult;ß
+export default SearchResult;
