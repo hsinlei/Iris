@@ -20,11 +20,11 @@ let pool = new pg.Pool({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-app.use(express.static(__dirname));
+// app.use(express.static(__dirname));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "index.html"));
+// });
 
 app.use(function(request, response, next) {
   response.header("Access-Control-Allow-Origin", "*"); // TODO: update to match the domain you will make the request from
@@ -89,7 +89,9 @@ app.post("/api/getsavedcount", function(request, response) {
   pool.connect((err, db, done) => {
     done();
     if (err) {
-      return console.log(err);
+      console.log("error in getsavedcount");
+      // console.log(err);
+      return;
     } else {
       db.query(
         "SELECT COUNT(*) FROM saves WHERE post_id = " + request.body.post_id,
@@ -165,10 +167,13 @@ app.post("/api/loginuser", function(request, response) {
 });
 
 app.post("/api/checksaved", function(request, response) {
+  console.log("checksaved...");
+  // console.log(request);
   pool.connect((err, db, done) => {
     done();
     if (err) {
-      return console.log(err);
+      console.log(err);
+      return;
     } else {
       db.query(
         "SELECT COUNT(*) FROM saves WHERE post_id = " +
