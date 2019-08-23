@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "reactstrap";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
@@ -104,6 +105,7 @@ class Login extends React.Component {
             value={this.state.email}
             onChange={this.handleEmailChange}
           />
+          <br />
           Password:
           <input
             type="text"
@@ -111,7 +113,12 @@ class Login extends React.Component {
             onChange={this.handlePasswordChange}
           />
         </label>
-        <input type="submit" value="Log in" />
+        <br />
+        <div>
+          <Button style={{ backgroundColor: "#3F51B5" }} type="submit">
+            Log in
+          </Button>
+        </div>
       </form>
     );
   }

@@ -3,22 +3,6 @@ import { ReactiveBase } from "@appbaseio/reactivesearch";
 import theme from "../styles/theme";
 import SearchContainer from "../styles/SearchContainer";
 import SearchFilters from "./SearchFilters";
-import Users from "./User";
-import Login from "./Login";
-
-class Store {
-  constructor(initialState = { user_id: 0 }) {
-    this.state = initialState;
-  }
-  set_user_id(user_id) {
-    this.state.user_id = user_id;
-  }
-  get_user_id(user_id) {
-    return this.state.user_id;
-  }
-}
-
-const store = new Store();
 
 const SearchResult = () => (
   <ReactiveBase
@@ -27,9 +11,7 @@ const SearchResult = () => (
     theme={theme}
   >
     <SearchContainer>
-      <Users />
-      <Login store={store} />
-      <SearchFilters store={store} />
+      <SearchFilters store={this.props.route.store} />
     </SearchContainer>
   </ReactiveBase>
 );

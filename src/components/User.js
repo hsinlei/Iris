@@ -1,5 +1,9 @@
 import React from "react";
+import { Button } from "reactstrap";
 
+const SignUpColor = {
+  backgroundColor: "#3F51B5"
+};
 class Users extends React.Component {
   constructor(props) {
     super(props);
@@ -71,20 +75,27 @@ class Users extends React.Component {
             value={this.state.value}
             onChange={this.handleNameChange}
           />
+          <br />
           Email:
           <input
             type="text"
             value={this.state.email}
             onChange={this.handleEmailChange}
           />
+          <br />
           Password:
           <input
             type="text"
             value={this.state.password}
             onChange={this.handlePasswordChange}
           />
+          <br />
         </label>
-        <input type="submit" value="Sign Up" />
+        <div>
+          <Button style={{ backgroundColor: "#3F51B5" }} type="submit">
+            Sign Up
+          </Button>
+        </div>
       </form>
     );
   }

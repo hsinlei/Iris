@@ -82,9 +82,6 @@ app.post("/api/createuser", function(request, response) {
   });
 });
 
-// app.post("/api/v1/users/login", UserWithDb.login);
-// app.delete("/api/v1/users/me", Auth.verifyToken, UserWithDb.delete);
-
 app.post("/api/getsavedcount", function(request, response) {
   // console.log("request post_id = " + request.body.post_id);
   pool.connect((err, db, done) => {
@@ -141,7 +138,7 @@ app.post("/api/loginuser", function(request, response) {
                 .send({ message: "The credentials you provided is incorrect" });
             }
 
-            console.log("this is rows 0" + first_result);
+            console.log("this is user id (in rows)" + first_result.id);
 
             if (
               !Helper.comparePassword(
@@ -154,6 +151,7 @@ app.post("/api/loginuser", function(request, response) {
                 .send({ message: "The credentials you provided is incorrect" });
             }
             response.status(201).send({ user_id: first_result.id });
+            // TODO: lead to the login success page
           }
         });
       } catch (error) {
