@@ -15,17 +15,17 @@ const topics = [{
 	  ]
 	},
 	{
-	"topicName": "Brain-Computer Interface",
+	"topicName": "Stand-up Comedy",
 	"numTitles": 15,
   	"time": "1454198578",
 	"titles": [
-		{"title": "Brain-Computer Interface - an overview",
+		{"title": "The Best Stand-Up Comedy Specials On Netflix Right Now",
 		"link": "https://www.ncbi.nlm.nih.gov/pubmed/17015072",
   		"time": "1454198578"},
-		{"title": "A Beginner’s Guide to Brain-Computer Interface and Convolutional Neural Networks",
+		{"title": "How to Become a Standup Comedian",
 		"link": "https://www.ncbi.nlm.nih.gov/pubmed/17015072",
   		"time": "1454198578"},
-		{"title": "Elon Musk’s brain machine will connect the human brain to a computer interface",
+		{"title": "Comedy Central Stand-Up - YouTube",
 		"link": "https://www.ncbi.nlm.nih.gov/pubmed/17015072",
   		"time": "1454198578"},
 	  ]

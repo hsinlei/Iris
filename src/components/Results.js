@@ -91,8 +91,10 @@ class Results extends React.Component {
       {
         method: "POST",
         headers: new Headers({ "Content-Type": "application/json" }),
-        body: JSON.stringify({ post_id: props.id, user_id: 2 })
-      }
+        body: JSON.stringify({
+          post_id: props.id,
+        })
+      }	
     );
     fetch(check_state_request)
       .then(response => {
@@ -111,9 +113,29 @@ class Results extends React.Component {
 	handleExpand = event => {
 		this.setState( prevState=> {
 			return {moreData: !prevState.moreData}
-		});
+    });
+    
+    axios({
+      method: "GET",
+      url: this.props.data.formattedUrl
+    })
+      // Saves the data to state. Only way to change the state is with setState
+      .then(data => {
+        this.setState({
+          data: data,
+          dataLoaded: true
+        });
+        console.log(data);
+        // var event = new Event("search_submitted");
+        // window.dispatchEvent(event);
+        // console.log(this.state.data);
+      })
+      // logs an error
+      .catch(err => {
+        console.log(err);
+      });
 	}
-
+  
   handleCheckboxChange = event => {
     const old_state = this.state.checked;
     console.log("old statet = " + old_state);
@@ -133,7 +155,7 @@ class Results extends React.Component {
       headers: new Headers({ "Content-Type": "application/json" }),
       // use hashcode
       body: JSON.stringify({
-        post_id: this.props.id,
+        post_id: this.props.user.id,
         user_id: 2
       })
     });
@@ -188,9 +210,7 @@ class Results extends React.Component {
 							{this.state.moreData && 
 							<div>
 							<div>
-								{/*Object.entries(this.props.data.pagemap.metatags[0]).map(function(idx, d) {
-									return (<div>{idx}</div>)
-								})*/
+								{
 								this.props.data.pagemap.metatags[0].citation_title
 							}
 							</div> <div>

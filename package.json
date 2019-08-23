@@ -24,7 +24,9 @@
         "react-emotion": "*",
         "react-router-dom": "^5.0.1",
         "react-vertical-timeline-component": "^2.4.0",
-        "server.js": "^1.0.0"
+        "reactstrap": "^8.0.1",
+        "server.js": "^1.0.0",
+        "universal-cookie": "^4.0.2"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
