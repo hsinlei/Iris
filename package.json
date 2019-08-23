@@ -48,6 +48,7 @@
   },
   "scripts": {
     "build": "webpack -p --progress",
+    "heroku-postbuild": "webpack -p",
     "start_du": "webpack-dev-server --hot --inline --progress --colors --port 8001",
     "start": "node server.js"
   }

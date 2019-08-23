@@ -3,10 +3,7 @@ let bodyParser = require("body-parser");
 let morgan = require("morgan");
 let pg = require("pg");
 // Heroku must listen on a specific port
-let PORT = process.env.PORT;
-if (PORT == null || PORT == "") {
-  PORT = 8002;
-}
+let PORT = process.env.PORT || 8002;
 let Helper = require("./Helper").Helper;
 let moment = require("moment");
 // var path = require("path");
@@ -23,6 +20,11 @@ let pool = new pg.Pool({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
+app.use(express.static(__dirname));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "index.html"));
+});
 
 app.use(function(request, response, next) {
   response.header("Access-Control-Allow-Origin", "*"); // TODO: update to match the domain you will make the request from
@@ -244,9 +246,7 @@ app.post("/api/unsave", function(request, response) {
   });
 });
 
-app.listen(PORT, "0.0.0.0", function() {
-  console.log("Listening on Port " + PORT);
-});
+app.listen(PORT);
 
 // Examples
 const getTableData = (req, res, db) => {
