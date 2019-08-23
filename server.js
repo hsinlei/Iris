@@ -170,6 +170,7 @@ app.post("/api/checksaved", function(request, response) {
     if (err) {
       return console.log(err);
     } else {
+      console.log(request.body);
       db.query(
         "SELECT COUNT(*) FROM saves WHERE post_id = " +
           request.body.post_id +
