@@ -9,6 +9,7 @@ import axios from 'axios';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 var timeSince = require('../utils').timeSince;
+const request = require('request');
 
 const renderResultStats = ({ numberOfResults, time }) => (
   <Flex justifyContent="flex-end" style={{ padding: "0 1rem" }}>
@@ -41,7 +42,7 @@ class Results extends React.Component {
     const request = new Request("http://localhost:8002/api/getsavedcount", {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ post_id: this.props.id })
+      body: JSON.stringify({ post_id: this.props.id, user_id: this.props.user.id })
     });
 
     fetch(request)
@@ -66,12 +67,11 @@ class Results extends React.Component {
      moreData: false,
       numUpvotes: 0
     };
-
     // Define state numUpvotes, checked, and dataLoaded
     const request = new Request("http://localhost:8002/api/getsavedcount", {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ post_id: props.id })
+      body: JSON.stringify({ post_id: props.id, user_id: props.user.id })
     });
 
     fetch(request)
@@ -93,6 +93,7 @@ class Results extends React.Component {
         headers: new Headers({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           post_id: props.id,
+          user_id: props.user.id
         })
       }	
     );
@@ -115,9 +116,14 @@ class Results extends React.Component {
 			return {moreData: !prevState.moreData}
     });
     
+
+  request('http://stackabuse.com', function(err, res, body) {  
+    console.log(body);
+});
+    /*
     axios({
       method: "GET",
-      url: this.props.data.formattedUrl
+      url:  "https://www.google.com"
     })
       // Saves the data to state. Only way to change the state is with setState
       .then(data => {
@@ -133,7 +139,7 @@ class Results extends React.Component {
       // logs an error
       .catch(err => {
         console.log(err);
-      });
+      });*/
 	}
   
   handleCheckboxChange = event => {
@@ -155,8 +161,8 @@ class Results extends React.Component {
       headers: new Headers({ "Content-Type": "application/json" }),
       // use hashcode
       body: JSON.stringify({
-        post_id: this.props.user.id,
-        user_id: 2
+        post_id: this.props.id,
+        user_id: this.props.user.id
       })
     });
     fetch(request)

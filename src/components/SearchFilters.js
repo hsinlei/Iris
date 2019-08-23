@@ -78,6 +78,8 @@ class SearchFilters extends React.Component {
     console.log(this.state.searchText);
   }
   render() {
+    console.log("searchfilter");
+    console.log(this.props);
     return (
       <div>
         <form

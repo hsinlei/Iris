@@ -47,7 +47,7 @@ class Main extends React.Component {
           <Route
             exact
             path="/"
-            render={props => <SearchResult {...props} user={this.state.user} />}
+            render={(props) => <SearchResult {...props} user={this.state.user} />}
           />
           <Route exact path="/profile" component={Profile}></Route>
         </Switch>
