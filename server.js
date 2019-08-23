@@ -3,7 +3,10 @@ let bodyParser = require("body-parser");
 let morgan = require("morgan");
 let pg = require("pg");
 // Heroku must listen on a specific port
-let PORT = process.env.PORT || 8002;
+let PORT = process.env.PORT;
+if (PORT == null || PORT == "") {
+  PORT = 8002;
+}
 let Helper = require("./Helper").Helper;
 let moment = require("moment");
 // var path = require("path");

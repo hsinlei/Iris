@@ -10,10 +10,45 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 var timeSince = require("../utils").timeSince;
 
+
 const renderResultStats = ({ numberOfResults, time }) => (
   <Flex justifyContent="flex-end" style={{ padding: "0 1rem" }}>
     {numberOfResults} results found in {time}ms
   </Flex>
+);
+
+const onData = data => (
+  <ResultItem key={data._id}>
+    {console.log(data)}
+
+    <div dangerouslySetInnerHTML={{ __html: data.title }} />
+    <div dangerouslySetInnerHTML={{ __html: data.text }} />
+    <Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
+      {!!data.parent && (
+        <FlexChild>
+          parent{" "}
+          <Link
+            href={`https://news.ycombinator.com/item?id=${data.parent}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {data.parent}
+          </Link>
+        </FlexChild>
+      )}
+      <FlexChild>{data.score} points</FlexChild>
+      <FlexChild>
+        <Link
+          href={`https://news.ycombinator.com/user?id=${data.by}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {data.by}
+        </Link>
+      </FlexChild>
+      <FlexChild>{timeSince(new Date(data.time * 1000))} ago</FlexChild>
+    </Flex>
+  </ResultItem>
 );
 
 const data = {
@@ -55,14 +90,16 @@ class Results extends React.Component {
         console.log("caught :" + err);
       });
   }
-
   constructor(props) {
     super(props);
 
     this.state = {
       checked: false,
       dataLoaded: false,
+<<<<<<< HEAD
       moreData: false,
+=======
+>>>>>>> 92ccb24c0b47f0e9ab1946f6e5b91a9337a597c0
       numUpvotes: 0
     };
 
@@ -92,7 +129,11 @@ class Results extends React.Component {
         headers: new Headers({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           post_id: props.id,
+<<<<<<< HEAD
           user_id: props.user.id
+=======
+          user_id: this.props.store.get_user_id()
+>>>>>>> 92ccb24c0b47f0e9ab1946f6e5b91a9337a597c0
         })
       }
     );
@@ -107,9 +148,9 @@ class Results extends React.Component {
       .catch(function(err) {
         console.log("caught :" + err);
       });
-    // window.setInterval(this.fetch_counts.bind(this), 5000);
   }
 
+<<<<<<< HEAD
   handleExpand = event => {
     this.setState(prevState => {
       return { moreData: !prevState.moreData };
@@ -136,6 +177,8 @@ class Results extends React.Component {
       });
   };
 
+=======
+>>>>>>> 92ccb24c0b47f0e9ab1946f6e5b91a9337a597c0
   handleCheckboxChange = event => {
     const old_state = this.state.checked;
     console.log("old statet = " + old_state);
@@ -155,8 +198,13 @@ class Results extends React.Component {
       headers: new Headers({ "Content-Type": "application/json" }),
       // use hashcode
       body: JSON.stringify({
+<<<<<<< HEAD
         post_id: props.id,
         user_id: props.user.id
+=======
+        post_id: this.props.id,
+        user_id: this.props.store.get_user_id()
+>>>>>>> 92ccb24c0b47f0e9ab1946f6e5b91a9337a597c0
       })
     });
     fetch(request)
@@ -170,7 +218,10 @@ class Results extends React.Component {
         console.log("caught :" + err);
       });
   };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 92ccb24c0b47f0e9ab1946f6e5b91a9337a597c0
   render() {
     return (
       <ResultItem key={0}>
@@ -187,6 +238,7 @@ class Results extends React.Component {
           </FlexChild>
           <FlexChild>
             <Link href={this.props.data.link}> {this.props.data.title} </Link>
+<<<<<<< HEAD
             <div>
               <SmallLink href={this.props.data.formattedUrl}>
                 {this.props.data.displayLink}{" "}
@@ -236,6 +288,11 @@ class Results extends React.Component {
               </div>
             )}
 
+=======
+            <div
+              dangerouslySetInnerHTML={{ __html: this.props.data.snippet }}
+            />
+>>>>>>> 92ccb24c0b47f0e9ab1946f6e5b91a9337a597c0
             <Flex
               className={resultItemDetails}
               style={{ paddingTop: 5, marginTop: 5 }}
@@ -253,6 +310,7 @@ class Results extends React.Component {
                 </FlexChild>
               )}
               <FlexChild>{data.score} points</FlexChild>
+<<<<<<< HEAD
               <FlexChild>{data.by}</FlexChild>
               <FlexChild>{timeSince(new Date(data.time * 1000))} ago</FlexChild>
               <div style={{ position: "absolute", right: 0 }}>
@@ -278,6 +336,18 @@ class Results extends React.Component {
                   />
                 </Fab>
               </div>
+=======
+              <FlexChild>
+                <Link
+                  href={`https://news.ycombinator.com/user?id=${data.by}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {data.by}
+                </Link>
+              </FlexChild>
+              <FlexChild>{timeSince(new Date(data.time * 1000))} ago</FlexChild>
+>>>>>>> 92ccb24c0b47f0e9ab1946f6e5b91a9337a597c0
             </Flex>
           </FlexChild>
         </Flex>
@@ -285,5 +355,12 @@ class Results extends React.Component {
     );
   }
 }
+<<<<<<< HEAD
+=======
+
+onData.propTypes = {
+  _source: PropTypes.object // eslint-disable-line
+};
+>>>>>>> 92ccb24c0b47f0e9ab1946f6e5b91a9337a597c0
 
 export default Results;

@@ -127,9 +127,10 @@ class SearchFilters extends React.Component {
                 title={d.title}
                 data={d}
                 user={this.props.user}
+                store={this.props.store}
               />
             );
-          })}
+          }, this)}
         </div>
       </div>
     );
