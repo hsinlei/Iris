@@ -1,29 +1,29 @@
 import React from "react";
 import { Button } from "reactstrap";
 
- const SignUpColor = {
+const SignUpColor = {
   backgroundColor: "#3F51B5"
 };
 class Users extends React.Component {
   constructor(props) {
     super(props);
 
-     this.state = { value: "", email: "", password: "" };
+    this.state = { value: "", email: "", password: "" };
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-   handleNameChange(event) {
+  handleNameChange(event) {
     this.setState({ value: event.target.value });
   }
 
-   handleEmailChange(event) {
+  handleEmailChange(event) {
     this.setState({ email: event.target.value });
   }
 
-   handlePasswordChange(event) {
+  handlePasswordChange(event) {
     this.setState({ password: event.target.value });
   }
   // TODO: change the submit into sign-up or log-in
@@ -48,24 +48,16 @@ class Users extends React.Component {
           //     checked: data.count > 0
           //   });
         });
-      })
-      .then(response => {
-        console.log(
-          "A person signed up: " +
-            this.state.value +
-            this.state.email +
-            this.state.password +
-            response
-        );
+        document.location.href = "/login";
       })
       .catch(function(err) {
         console.log("caught :" + err);
       });
 
-     event.preventDefault();
+    event.preventDefault();
   }
 
-   render() {
+  render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
