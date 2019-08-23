@@ -78,8 +78,6 @@ class SearchFilters extends React.Component {
     console.log(this.state.searchText);
   }
   render() {
-    console.log("english" + this.props);
-    this.user = this.props.user;
     return (
       <div>
         <form
