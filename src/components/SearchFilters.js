@@ -27,8 +27,8 @@ String.prototype.hashCode = function() {
 };
 
 class SearchFilters extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       checked: false,
       data: sample,
@@ -78,6 +78,8 @@ class SearchFilters extends React.Component {
     console.log(this.state.searchText);
   }
   render() {
+    console.log("searchfilter");
+    console.log(this.props);
     return (
       <div>
         <form
@@ -119,17 +121,17 @@ class SearchFilters extends React.Component {
         </form>
 
         <div style={{ padding: "1rem" }}>
-          {this.state.data.items.map(function(d, idx) {
+          {this.state.data.items.map((d, idx) => {
             return (
               <Results
                 key={d.link.hashCode()}
                 id={d.link.hashCode()}
                 title={d.title}
                 data={d}
-                store={this.props.store}
+                user={this.props.user}
               />
             );
-          }, this)}
+          })}
         </div>
       </div>
     );

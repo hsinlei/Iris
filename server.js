@@ -244,7 +244,9 @@ app.post("/api/unsave", function(request, response) {
   });
 });
 
-app.listen(PORT, () => console.log("Listening on port " + PORT));
+app.listen(PORT, "0.0.0.0", function() {
+  console.log("Listening on Port " + PORT);
+});
 
 // Examples
 const getTableData = (req, res, db) => {

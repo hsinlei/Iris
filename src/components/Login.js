@@ -37,9 +37,10 @@ class Login extends React.Component {
             this.setState({
               user_id: data.user_id
             });
-            this.props.store.set_user_id(data.user_id);
+            this.props.setUser({ name: login.name, id: data.user_id });
             console.log(cookies.get("login")); // Pacman
             console.log(data.user_id);
+            document.location.href = "/";
           });
         })
         .catch(function(err) {
@@ -75,7 +76,7 @@ class Login extends React.Component {
           this.setState({
             user_id: data.user_id
           });
-          this.props.store.set_user_id(data.user_id);
+          this.props.setUser({ name: this.state.name, id: data.user_id });
           // TODO: set log in status
           cookies.set(
             "login",
@@ -84,8 +85,9 @@ class Login extends React.Component {
               password: this.state.password
             })
           );
-          console.log(cookies.get("login")); // Pacman
+          console.log(cookies.get("login"));
           console.log(data.user_id);
+          document.location.href = "/";
         });
       })
       .catch(function(err) {

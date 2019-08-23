@@ -48,15 +48,7 @@ class Users extends React.Component {
           //     checked: data.count > 0
           //   });
         });
-      })
-      .then(response => {
-        console.log(
-          "A person signed up: " +
-            this.state.value +
-            this.state.email +
-            this.state.password +
-            response
-        );
+        document.location.href = "/login";
       })
       .catch(function(err) {
         console.log("caught :" + err);

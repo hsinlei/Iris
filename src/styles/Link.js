@@ -11,6 +11,16 @@ const Link = styled.a`
 		border-bottom: 1px dotted #ddd;
 	}
 `;
+export const GreyLink = styled.a`
+	cursor: pointer;
+	color: #aaa;
+	text-decoration: underline;
+	font-size:18px;
+
+	&:hover {
+		border-bottom: 1px dotted #ddd;
+	}
+`;
 
 export default Link;
 

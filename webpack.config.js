@@ -28,7 +28,12 @@ module.exports = {
 		  }
 		]
 	},
-	
+	node: {
+		fs: 'empty',
+		net: 'empty',
+		tls: 'empty',
+		dns: 'empty'
+	  },
 	plugins: [
 	  new HtmlWebpackPlugin({
 		template: '../index.html'

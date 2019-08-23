@@ -1,79 +1,20 @@
 import React from "react";
 //import { ReactiveList } from '@appbaseio/reactivesearch';
 import PropTypes from "prop-types";
-
-import ResultItem, { resultItemDetails } from "../styles/ResultItem";
-import Flex, { FlexChild } from "../styles/Flex";
-import Checkbox from "../styles/Checkbox";
-import Link from "../styles/Link";
-import axios from "axios";
-
-function timeSince(date) {
-  const seconds = Math.floor((new Date() - date) / 1000);
-
-  let interval = Math.floor(seconds / 31536000);
-
-  if (interval >= 1) {
-    const postfix = interval === 1 ? " year" : " years";
-    return interval + postfix;
-  }
-  interval = Math.floor(seconds / 2592000);
-  if (interval > 1) {
-    return `${interval} months`;
-  }
-  interval = Math.floor(seconds / 86400);
-  if (interval > 1) {
-    return `${interval} days`;
-  }
-  interval = Math.floor(seconds / 3600);
-  if (interval > 1) {
-    return `${interval} hours`;
-  }
-  interval = Math.floor(seconds / 60);
-  if (interval > 1) {
-    return `${interval} minutes`;
-  }
-  return `${Math.floor(seconds)} seconds`;
-}
+import ResultItem, { resultItemDetails } from '../styles/ResultItem';
+import Flex, { FlexChild } from '../styles/Flex';
+import Checkbox from '../styles/Checkbox'
+import Link, {SmallLink} from '../styles/Link';
+import axios from 'axios';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+var timeSince = require('../utils').timeSince;
+const request = require('request');
 
 const renderResultStats = ({ numberOfResults, time }) => (
   <Flex justifyContent="flex-end" style={{ padding: "0 1rem" }}>
     {numberOfResults} results found in {time}ms
   </Flex>
-);
-
-const onData = data => (
-  <ResultItem key={data._id}>
-    {console.log(data)}
-
-    <div dangerouslySetInnerHTML={{ __html: data.title }} />
-    <div dangerouslySetInnerHTML={{ __html: data.text }} />
-    <Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
-      {!!data.parent && (
-        <FlexChild>
-          parent{" "}
-          <Link
-            href={`https://news.ycombinator.com/item?id=${data.parent}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {data.parent}
-          </Link>
-        </FlexChild>
-      )}
-      <FlexChild>{data.score} points</FlexChild>
-      <FlexChild>
-        <Link
-          href={`https://news.ycombinator.com/user?id=${data.by}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {data.by}
-        </Link>
-      </FlexChild>
-      <FlexChild>{timeSince(new Date(data.time * 1000))} ago</FlexChild>
-    </Flex>
-  </ResultItem>
 );
 
 const data = {
@@ -94,13 +35,14 @@ const data = {
 };
 
 class Results extends React.Component {
+
   fetch_counts() {
     console.log("fetch_ocounts");
     // Define state numUpvotes, checked, and dataLoaded
     const request = new Request("http://localhost:8002/api/getsavedcount", {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ post_id: this.props.id })
+      body: JSON.stringify({ post_id: this.props.id, user_id: this.props.user.id })
     });
 
     fetch(request)
@@ -115,20 +57,21 @@ class Results extends React.Component {
         console.log("caught :" + err);
       });
   }
+
   constructor(props) {
     super(props);
 
     this.state = {
       checked: false,
       dataLoaded: false,
+     moreData: false,
       numUpvotes: 0
     };
-
     // Define state numUpvotes, checked, and dataLoaded
     const request = new Request("http://localhost:8002/api/getsavedcount", {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ post_id: props.id })
+      body: JSON.stringify({ post_id: props.id, user_id: props.user.id })
     });
 
     fetch(request)
@@ -150,9 +93,9 @@ class Results extends React.Component {
         headers: new Headers({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           post_id: props.id,
-          user_id: this.props.store.get_user_id()
+          user_id: props.user.id
         })
-      }
+      }	
     );
     fetch(check_state_request)
       .then(response => {
@@ -165,8 +108,40 @@ class Results extends React.Component {
       .catch(function(err) {
         console.log("caught :" + err);
       });
+    // window.setInterval(this.fetch_counts.bind(this), 5000);
   }
 
+	handleExpand = event => {
+		this.setState( prevState=> {
+			return {moreData: !prevState.moreData}
+    });
+    
+
+  request('http://stackabuse.com', function(err, res, body) {  
+    console.log(body);
+});
+    /*
+    axios({
+      method: "GET",
+      url:  "https://www.google.com"
+    })
+      // Saves the data to state. Only way to change the state is with setState
+      .then(data => {
+        this.setState({
+          data: data,
+          dataLoaded: true
+        });
+        console.log(data);
+        // var event = new Event("search_submitted");
+        // window.dispatchEvent(event);
+        // console.log(this.state.data);
+      })
+      // logs an error
+      .catch(err => {
+        console.log(err);
+      });*/
+	}
+  
   handleCheckboxChange = event => {
     const old_state = this.state.checked;
     console.log("old statet = " + old_state);
@@ -187,7 +162,7 @@ class Results extends React.Component {
       // use hashcode
       body: JSON.stringify({
         post_id: this.props.id,
-        user_id: this.props.store.get_user_id()
+        user_id: this.props.user.id
       })
     });
     fetch(request)
@@ -201,62 +176,88 @@ class Results extends React.Component {
         console.log("caught :" + err);
       });
   };
-  render() {
-    return (
-      <ResultItem key={0}>
-        <Flex>
-          <FlexChild>
-            <label>
-              <Checkbox
-                checked={this.state.checked}
-                onChange={this.handleCheckboxChange}
-              />
-            </label>
+	
 
-            <div> {this.state.numUpvotes} </div>
-          </FlexChild>
-          <FlexChild>
-            <Link href={this.props.data.link}> {this.props.data.title} </Link>
-            <div
-              dangerouslySetInnerHTML={{ __html: this.props.data.snippet }}
-            />
-            <Flex
-              className={resultItemDetails}
-              style={{ paddingTop: 5, marginTop: 5 }}
-            >
-              {!!data.parent && (
-                <FlexChild>
-                  parent{" "}
-                  <Link
-                    href={this.props.data.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {data.parent}
-                  </Link>
-                </FlexChild>
-              )}
-              <FlexChild>{data.score} points</FlexChild>
-              <FlexChild>
-                <Link
-                  href={`https://news.ycombinator.com/user?id=${data.by}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {data.by}
-                </Link>
-              </FlexChild>
-              <FlexChild>{timeSince(new Date(data.time * 1000))} ago</FlexChild>
-            </Flex>
-          </FlexChild>
-        </Flex>
-      </ResultItem>
-    );
-  }
-}
 
-onData.propTypes = {
-  _source: PropTypes.object // eslint-disable-line
-};
+	render() {
+		return (
+			<ResultItem key={0}>
+				<Flex>
+					<FlexChild>
+						<label>
+							<Checkbox checked={this.state.checked} 
+									onChange={this.handleCheckboxChange}
+							/>
+						</label>
+
+						<div> {this.state.numUpvotes} </div>
+					</FlexChild>
+					<FlexChild>
+						<Link href={this.props.data.link}> {this.props.data.title} </Link>
+						<div><SmallLink href={this.props.data.formattedUrl}>{this.props.data.displayLink} </SmallLink></div>
+						<div style={{color:"#616161"}}>{this.props.data.snippet } </div>
+
+						{this.state.moreData && 
+							<div>
+							<div>
+								{/*Object.entries(this.props.data.pagemap.metatags[0]).map(function(idx, d) {
+									return (<div>{idx}</div>)
+								})*/
+								this.props.data.pagemap.metatags[0].citation_title
+							}
+							</div> <div>
+								{/*Object.entries(this.props.data.pagemap.metatags[0]).map(function(idx, d) {
+									return (<div>{idx}</div>)
+								})*/
+								this.props.data.pagemap.metatags[0].citation_journal_title + ". " + this.props.data.snippet + ". " + this.props.data.snippet + ". " + 
+								this.props.data.pagemap.metatags[0].citation_title
+							}
+							</div> </div>}
+							{this.state.moreData && 
+							<div>
+							<div>
+								{
+								this.props.data.pagemap.metatags[0].citation_title
+							}
+							</div> <div>
+								{/*Object.entries(this.props.data.pagemap.metatags[0]).map(function(idx, d) {
+									return (<div>{idx}</div>)
+								})*/
+								this.props.data.pagemap.metatags[0].citation_journal_title + ". " + this.props.data.snippet + ". " + this.props.data.snippet + ". " + 
+								this.props.data.pagemap.metatags[0].citation_title
+							}
+							</div> </div>}
+
+						<Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
+							{!!data.parent && (
+								<FlexChild>
+									parent{' '}
+									<Link
+										href={this.props.data.link}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										{data.parent}
+									</Link>
+								</FlexChild>
+							)}
+							<FlexChild>{data.score} points</FlexChild>
+							<FlexChild>
+								{data.by}
+							</FlexChild>
+							<FlexChild>{timeSince(new Date(data.time * 1000))} ago</FlexChild>
+							<div style={{position: 'absolute', right:0}}> 
+							<Fab aria-label="add" onClick={this.handleExpand}style={{backgroundColor:'#ffffff', boxShadow:'none',maxWidth: '20px', maxHeight: '20px',minHeight:'20px' }}>
+					          <AddIcon size="small" color="primary" style={{fill:'#9fa8da', maxWidth: '15px', maxHeight: '15px' }}/>
+					        </Fab>
+					        </div>
+						</Flex>
+					</FlexChild>
+				</Flex>
+
+			</ResultItem>
+		)
+	}
+ }
 
 export default Results;
