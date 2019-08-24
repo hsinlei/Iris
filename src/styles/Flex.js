@@ -51,10 +51,12 @@ const Flex = styled.div`
 	${props => props.justifyContent && css`
 		justify-content: ${props.justifyContent}
 	`};
-
 	${props => props.responsive && queries.small`
 		flex-direction: column;
 	`};
+	${props => props.flexDirection && css`
+	flex-direction: ${props.flexDirection}
+`};
 `;
 
 export default Flex;
