@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled'
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, BrowserRouter as Router } from 'react-router-dom';
 import Navbar from '../styles/Navbar';
 import Brightness1OutlinedIcon from '@material-ui/icons/Brightness1Outlined';
 const PlainLink = styled(NavLink)`
@@ -18,8 +18,10 @@ const ProfileIcon = styled(Brightness1OutlinedIcon)`
   `
 const Navigation = () => (
   <Navbar style={{ display: 'flex', flexDirection: 'row' }}>
+    <Router>
     <PlainLink to='/'>Iris</PlainLink>
     <PlainLink to='/profile' style={{ minWidth: '10px', minHeight: '10px' }}><ProfileIcon /></PlainLink>
+    </Router>
   </Navbar>
 );
 

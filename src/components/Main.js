@@ -1,6 +1,6 @@
 import React from "react";
 import Container from "../styles/Container";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import SearchResult from "./SearchResult";
 import Profile from "./Profile";
 import Login from "./Login";
@@ -21,6 +21,7 @@ class Main extends React.Component {
   render() {
     return (
       <Container>
+        <Router>
         <Switch>
           <Route
             exact
@@ -51,6 +52,7 @@ class Main extends React.Component {
           />
           <Route exact path="/profile" component={Profile}></Route>
         </Switch>
+        </Router>
       </Container>
     );
   }

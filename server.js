@@ -16,8 +16,10 @@ let app = express();
 let pool = new pg.Pool({
   port: 5432,
   max: 10,
-  host: "localhost",
-  database: "postgres"
+  host: "database-iris.ceyastzlv2lg.us-west-1.rds.amazonaws.com",
+  database: "postgres",
+  user: "postgres",
+  password: "hacklodge2019"
 });
 
 app.use(bodyParser.json());
@@ -83,7 +85,7 @@ app.post("/api/createuser", function(request, response) {
 });
 
 app.post("/api/getsavedcount", function(request, response) {
-  // console.log("request post_id = " + request.body.post_id);
+  console.log("get saved count for post_id = " + request.body.post_id);
   pool.connect((err, db, done) => {
     done();
     if (err) {
@@ -163,6 +165,7 @@ app.post("/api/loginuser", function(request, response) {
 });
 
 app.post("/api/checksaved", function(request, response) {
+  console.log('check is saved for post_id ' + request.body.post_id);
   pool.connect((err, db, done) => {
     done();
     if (err) {
