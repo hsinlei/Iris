@@ -109,7 +109,7 @@ app.post("/api/getsavedcount", function(request, response) {
 
 app.post("/api/getsnippet", function(request, response) {
   console.log("get snippet" + request.body.url);
-
+  
   osmosis
   .get(request.body.url)
   .set({'abstract': ['.abstract .abstr p']})

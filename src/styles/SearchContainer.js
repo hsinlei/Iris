@@ -2,7 +2,7 @@
 import styled from '@emotion/styled';
 
 const SearchContainer = styled.section`
-	max-width: 1000px;
+	max-width: 800px;
 	margin-left: 100px;
 	height: 100%;
 	background: white;
