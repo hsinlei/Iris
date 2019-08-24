@@ -1,5 +1,6 @@
 import React from "react";
 import { ReactiveBase } from "@appbaseio/reactivesearch";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import theme from "./styles/theme";
 
@@ -14,10 +15,12 @@ import Navigation from "./components/Navigation";
 import Main from "./components/Main";
 
 const App = () => (
-  <div>
-    <Navigation />
-    <Main />
-  </div>
+  <Router>
+    <div>
+      <Navigation />
+      <Main />
+    </div>
+  </Router>
 );
 
 export default App;

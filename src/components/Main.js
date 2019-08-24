@@ -1,6 +1,6 @@
 import React from "react";
 import Container from "../styles/Container";
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import SearchResult from "./SearchResult";
 import Profile from "./Profile";
 import Login from "./Login";
@@ -29,51 +29,47 @@ class Main extends React.Component {
   render() {
     return (
       <Container>
-        <Router>
-          <Switch>
-            <Route
-              exact
-              path="/signup"
-              render={props => (
-                <User
-                  {...props}
-                  user={this.state.user}
-                  setUser={this.setUser.bind(this)}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/login"
-              render={props => (
-                <Login
-                  {...props}
-                  user={this.state.user}
-                  setUser={this.setUser.bind(this)}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/logout"
-              render={props => (
-                <Logout
-                  {...props}
-                  user={this.state.user}
-                  setUser={this.setUser.bind(this)}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/"
-              render={props => (
-                <SearchResult {...props} user={this.state.user} />
-              )}
-            />
-            <Route exact path="/profile" component={Profile}></Route>
-          </Switch>
-        </Router>
+        <Switch>
+          <Route
+            exact
+            path="/signup"
+            render={props => (
+              <User
+                {...props}
+                user={this.state.user}
+                setUser={this.setUser.bind(this)}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/login"
+            render={props => (
+              <Login
+                {...props}
+                user={this.state.user}
+                setUser={this.setUser.bind(this)}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/logout"
+            render={props => (
+              <Logout
+                {...props}
+                user={this.state.user}
+                setUser={this.setUser.bind(this)}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/"
+            render={props => <SearchResult {...props} user={this.state.user} />}
+          />
+          <Route exact path="/profile" component={Profile}></Route>
+        </Switch>
       </Container>
     );
   }
