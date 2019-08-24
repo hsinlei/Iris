@@ -8,6 +8,7 @@ import Link, {SmallLink} from '../styles/Link';
 import axios from 'axios';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import Abstract from '../components/Abstract';
 var timeSince = require('../utils').timeSince;
 const request = require('request');
 
@@ -18,6 +19,7 @@ const renderResultStats = ({ numberOfResults, time }) => (
 );
 
 const data = {
+  who: "Elon Musk, Andrew Ng, Paul Allen",
   by: "scootklein",
   highlight: {},
   id: "11004454",
@@ -113,51 +115,41 @@ class Results extends React.Component {
   }
 
 	handleExpand = event => {
-    
-    const snippet_request = new Request("http://localhost:8002/api/getsnippet", {
-      method: "POST",
-      headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify({
-        url: this.props.data.formattedUrl
-      })
-    });
-    console.log("snippet request");
-    fetch(snippet_request)
-      .then(response => {
+    if (this.state.showMore) {
+      this.setState({showMore: false});
+    } else {
+      if ('abstract' in this.props.data) {
+        this.setState( prevState=> {
+          return {
+            moreData: {abstract: this.props.data.abstract},
+            showMore: !prevState.showMore}
+        });
+      } else {
+        const snippet_request = new Request("http://localhost:8002/api/getsnippet", {
+          method: "POST",
+          headers: new Headers({ "Content-Type": "application/json" }),
+          body: JSON.stringify({
+            url: this.props.data.formattedUrl
+          })
+        });
+        console.log("snippet request");
+        fetch(snippet_request)
+          .then(response => {
 
-        response.json().then(data => {
-          this.setState( prevState=> {
-            return {
-              moreData: data.text.abstract,
-              showMore: !prevState.showMore}
+            response.json().then(data => {
+              this.setState( prevState=> {
+                return {
+                  moreData: data.text,
+                  showMore: !prevState.showMore}
+              });
+              console.log(data)
+            });
+          })
+          .catch(function(err) {
+            console.log("caught :" + err);
           });
-          console.log(data)
-        });
-      })
-      .catch(function(err) {
-        console.log("caught :" + err);
-      });
-
-    /*
-    axios({
-      method: "GET",
-      url:  "https://www.google.com"
-    })
-      // Saves the data to state. Only way to change the state is with setState
-      .then(data => {
-        this.setState({
-          data: data,
-          dataLoaded: true
-        });
-        console.log(data);
-        // var event = new Event("search_submitted");
-        // window.dispatchEvent(event);
-        // console.log(this.state.data);
-      })
-      // logs an error
-      .catch(err => {
-        console.log(err);
-      });*/
+        }
+    }
 	}
   
   handleCheckboxChange = event => {
@@ -202,41 +194,25 @@ class Results extends React.Component {
 			<ResultItem key={0}>
 				<Flex>
 					<FlexChild>
+            <div style={{paddingTop:'5px', paddingRight:'2px'}}>
 						<label>
 							<Checkbox checked={this.state.checked} 
 									onChange={this.handleCheckboxChange}
 							/>
 						</label>
 
-						<div> {this.state.numUpvotes} </div>
+						<div style={{justifyContent: 'center', display:'flex', color:'#cccccc'}}> {this.state.numUpvotes} </div>
+            </div>
 					</FlexChild>
 					<FlexChild>
 						<Link href={this.props.data.link}> {this.props.data.title} </Link>
 						<div><SmallLink href={this.props.data.formattedUrl}>{this.props.data.displayLink} </SmallLink></div>
-						<div style={{color:"#616161"}}>{this.props.data.snippet } </div>
-
-						{this.state.showMore && this.state.moreData.length != 0 &&
-							<div>
-                {this.state.moreData}
-              </div>}
-
+						{!this.state.showMore && <div style={{fontFamily:'Georgia', fontSize:'15px',lineHeight:'1.6', paddingTop:'5px'}}>{this.props.data.snippet }</div>}
+						{this.state.showMore && this.state.moreData.abstract.length != 0 &&
+							<Abstract data={this.state.moreData}/>
+            }
 						<Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
-							{!!data.parent && (
-								<FlexChild>
-									parent{' '}
-									<Link
-										href={this.props.data.link}
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										{data.parent}
-									</Link>
-								</FlexChild>
-							)}
-							<FlexChild>{data.score} points</FlexChild>
-							<FlexChild>
-								{data.by}
-							</FlexChild>
+							<FlexChild>Saved by {data.who}</FlexChild>
 							<FlexChild>{timeSince(new Date(data.time * 1000))} ago</FlexChild>
 							<div style={{position: 'absolute', right:0}}> 
 							<Fab aria-label="add" onClick={this.handleExpand}style={{backgroundColor:'#ffffff', boxShadow:'none',maxWidth: '20px', maxHeight: '20px',minHeight:'20px' }}>
