@@ -34,46 +34,27 @@ const data = {
   _type: "hackernews-live"
 };
 
+const API_SERVER = "http://localhost:8002";
+
 class Results extends React.Component {
-  fetch_counts() {
-    console.log("fetch_ocounts");
-    // Define state numUpvotes, checked, and dataLoaded
-    const request = new Request("http://localhost:8002/api/getsavedcount", {
-      method: "POST",
-      headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify({
-        post_id: this.props.id,
-        user_id: this.props.user.id
-      })
-    });
-
-    fetch(request)
-      .then(response => {
-        response.json().then(data => {
-          this.setState({
-            numUpvotes: data.saved
-          });
-        });
-      })
-      .catch(function(err) {
-        console.log("caught :" + err);
-      });
-  }
-
   constructor(props) {
     super(props);
 
+    // Define state numUpvotes, checked, and dataLoaded
     this.state = {
       checked: false,
       dataLoaded: false,
       moreData: false,
       numUpvotes: 0
     };
-    // Define state numUpvotes, checked, and dataLoaded
-    const request = new Request("http://localhost:8002/api/getsavedcount", {
+
+    const request = new Request(API_SERVER + "/api/getsavedcount", {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ post_id: props.id, user_id: props.user.id })
+      body: JSON.stringify({
+        post_id: props.id,
+        user_id: props.user.id
+      })
     });
 
     fetch(request)
@@ -88,17 +69,15 @@ class Results extends React.Component {
         console.log("caught :" + err);
       });
 
-    const check_state_request = new Request(
-      "http://localhost:8002/api/checksaved",
-      {
-        method: "POST",
-        headers: new Headers({ "Content-Type": "application/json" }),
-        body: JSON.stringify({
-          post_id: props.id,
-          user_id: props.user.id
-        })
-      }
-    );
+    const check_state_request = new Request(API_SERVER + "/api/checksaved", {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify({
+        post_id: props.id,
+        user_id: props.user.id
+      })
+    });
+
     fetch(check_state_request)
       .then(response => {
         response.json().then(data => {
@@ -110,7 +89,6 @@ class Results extends React.Component {
       .catch(function(err) {
         console.log("caught :" + err);
       });
-    // window.setInterval(this.fetch_counts.bind(this), 5000);
   }
 
   handleExpand = event => {
@@ -147,9 +125,7 @@ class Results extends React.Component {
     const old_state = this.state.checked;
     console.log("old statet = " + old_state);
     const op = old_state ? -1 : 1;
-    const end_point = old_state
-      ? "http://localhost:8002/api/unsave"
-      : "http://localhost:8002/api/save";
+    const end_point = API_SERVER + (old_state ? "/api/unsave" : "/api/save");
     this.setState(prevState => {
       return {
         numUpvotes: +prevState.numUpvotes + op,

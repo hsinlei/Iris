@@ -4,6 +4,9 @@ import { Button } from "reactstrap";
 const SignUpColor = {
   backgroundColor: "#3F51B5"
 };
+
+const API_SERVER = "http://localhost:8002";
+
 class Users extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +32,7 @@ class Users extends React.Component {
   // TODO: change the submit into sign-up or log-in
   handleSubmit(event) {
     const sign_up_request = new Request(
-      "http://localhost:8002/api/createuser",
+      API_SERVER + "/api/createuser",
       {
         method: "POST",
         headers: new Headers({ "Content-Type": "application/json" }),
