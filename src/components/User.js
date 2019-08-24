@@ -5,6 +5,12 @@ const SignUpColor = {
   backgroundColor: "#3F51B5"
 };
 
+const EntryForm = {
+  margin: "2rem",
+  textAlign: "center",
+  fontFamily: "Lato, Helvetica, sans-serif"
+};
+
 const API_SERVER = "http://localhost:8002";
 
 class Users extends React.Component {
@@ -31,18 +37,15 @@ class Users extends React.Component {
   }
   // TODO: change the submit into sign-up or log-in
   handleSubmit(event) {
-    const sign_up_request = new Request(
-      API_SERVER + "/api/createuser",
-      {
-        method: "POST",
-        headers: new Headers({ "Content-Type": "application/json" }),
-        body: JSON.stringify({
-          name: this.state.value,
-          email: this.state.email,
-          password: this.state.password
-        })
-      }
-    );
+    const sign_up_request = new Request(API_SERVER + "/api/createuser", {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify({
+        name: this.state.value,
+        email: this.state.email,
+        password: this.state.password
+      })
+    });
     fetch(sign_up_request)
       .then(response => {
         response.json().then(data => {
@@ -62,36 +65,41 @@ class Users extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input
-            type="text"
-            value={this.state.value}
-            onChange={this.handleNameChange}
-          />
-          <br />
-          Email:
-          <input
-            type="text"
-            value={this.state.email}
-            onChange={this.handleEmailChange}
-          />
-          <br />
-          Password:
-          <input
-            type="text"
-            value={this.state.password}
-            onChange={this.handlePasswordChange}
-          />
-          <br />
-        </label>
-        <div>
-          <Button style={{ backgroundColor: "#3F51B5" }} type="submit">
-            Sign Up
-          </Button>
-        </div>
-      </form>
+      <div style={EntryForm}>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Name:
+            <input
+              type="text"
+              value={this.state.value}
+              onChange={this.handleNameChange}
+            />
+            <br />
+            Email:
+            <input
+              type="text"
+              value={this.state.email}
+              onChange={this.handleEmailChange}
+            />
+            <br />
+            Password:
+            <input
+              type="text"
+              value={this.state.password}
+              onChange={this.handlePasswordChange}
+            />
+            <br />
+          </label>
+          <div>
+            <Button
+              style={{ backgroundColor: "#3F51B5", fontColor: "white" }}
+              type="submit"
+            >
+              Sign Up
+            </Button>
+          </div>
+        </form>
+      </div>
     );
   }
 }

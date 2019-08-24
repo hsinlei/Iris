@@ -4,6 +4,12 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
+const EntryForm = {
+  margin: "2rem",
+  textAlign: "center",
+  fontFamily: "Lato, Helvetica, sans-serif"
+};
+
 const API_SERVER = "http://localhost:8002";
 
 class Login extends React.Component {
@@ -14,6 +20,7 @@ class Login extends React.Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    /*
     const login_str = decodeURIComponent(
       cookies.get("login", { doNotParse: true })
     );
@@ -49,6 +56,7 @@ class Login extends React.Component {
           console.log("caught :" + err);
         });
     }
+    */
   }
 
   handleEmailChange(event) {
@@ -79,12 +87,12 @@ class Login extends React.Component {
             user_id: data.user_id
           });
           this.props.setUser({ name: this.state.name, id: data.user_id });
-          // TODO: set log in status
           cookies.set(
             "login",
             JSON.stringify({
               email: this.state.email,
-              password: this.state.password
+              password: this.state.password,
+              user_id: data.user_id
             })
           );
           console.log(cookies.get("login"));
@@ -101,29 +109,31 @@ class Login extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Email:
-          <input
-            type="text"
-            value={this.state.email}
-            onChange={this.handleEmailChange}
-          />
+      <div style={EntryForm}>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Email:
+            <input
+              type="text"
+              value={this.state.email}
+              onChange={this.handleEmailChange}
+            />
+            <br />
+            Password:
+            <input
+              type="text"
+              value={this.state.password}
+              onChange={this.handlePasswordChange}
+            />
+          </label>
           <br />
-          Password:
-          <input
-            type="text"
-            value={this.state.password}
-            onChange={this.handlePasswordChange}
-          />
-        </label>
-        <br />
-        <div>
-          <Button style={{ backgroundColor: "#3F51B5" }} type="submit">
-            Log in
-          </Button>
-        </div>
-      </form>
+          <div>
+            <Button style={{ backgroundColor: "#3F51B5" }} type="submit">
+              Log in
+            </Button>
+          </div>
+        </form>
+      </div>
     );
   }
 }

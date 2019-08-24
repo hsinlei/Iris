@@ -9,7 +9,7 @@ if (PORT == null || PORT == "") {
 }
 let Helper = require("./Helper").Helper;
 let moment = require("moment");
-// var path = require("path");
+const path = require("path");
 // var UserWithDb = require(path.resolve(__dirname, "./User.js"));
 
 let app = express();
@@ -247,9 +247,8 @@ app.post("/api/unsave", function(request, response) {
   });
 });
 
-app.use(express.static("build"));
-
-app.get("/*", (req, res) => {
+app.use(express.static(path.join(__dirname, "dist")));
+app.get("/*", function(req, res) {
   res.sendFile(path.join(__dirname + "/dist/index.html"));
 });
 
