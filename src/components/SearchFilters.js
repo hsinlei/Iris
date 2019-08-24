@@ -31,27 +31,25 @@ class SearchFilters extends React.Component {
     super(props);
     this.state = {
       checked: false,
-      data: sample,
+      data: {},
       searchText: "",
       dataLoaded: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.submitQuery = this.submitQuery.bind(this);
     this.handleSearchText = this.handleSearchText.bind(this);
   }
+  componentDidMount(){
+    if (this.props.query.length){
+      this.submitQuery(this.props.query);
+    } else {
+      this.setState({
+        data: sample
+      });
+    }
+  }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    const params = new FormData(event.target);
-    console.log(params);
-    //  var datar = { key: 'AIzaSyBTdqfxtLNaSAayXLeWif0NVKRItScdrp0',
-    //  	q: params.get('q'),
-    // cx: params.get('cx')}
-    // fetch('/api/form-submit-url', {
-    //   method: 'POST',
-    //   body: data,
-    // });
-    var query = params.get("q");
-    query = this.state.searchText;
+  submitQuery(query) {
     axios({
       method: "GET",
       url:
@@ -73,6 +71,16 @@ class SearchFilters extends React.Component {
         console.log(err);
       });
   }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const params = new FormData(event.target);
+    console.log(params);
+    var query = params.get("q");
+    query = this.state.searchText;
+    this.submitQuery(query)
+  }
+
   handleSearchText(event) {
     this.setState({ searchText: event.target.value });
     console.log(this.state.searchText);
@@ -120,7 +128,7 @@ class SearchFilters extends React.Component {
           </Flex>
         </form>
 
-        <div style={{ padding: "1rem" }}>
+        {Object.keys(this.state.data).length != 0 && <div style={{ padding: "1rem" }}>
           {this.state.data.items.map((d, idx) => {
             return (
               <Results
@@ -132,7 +140,7 @@ class SearchFilters extends React.Component {
               />
             );
           })}
-        </div>
+        </div>}
       </div>
     );
   }

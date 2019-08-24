@@ -7,6 +7,8 @@ import SearchFilters from "./SearchFilters";
 class SearchResult extends React.Component {
   constructor(props) {
     super(props);
+    console.log("searched");
+    console.log(this.props.query)
   }
   render() {
     return (
@@ -16,7 +18,7 @@ class SearchResult extends React.Component {
         theme={theme}
       >
         <SearchContainer>
-          <SearchFilters user={this.props.user} />
+          <SearchFilters user={this.props.user} query={this.props.query}/>
         </SearchContainer>
       </ReactiveBase>
     );
