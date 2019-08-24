@@ -165,7 +165,7 @@ app.post("/api/loginuser", function(request, response) {
 });
 
 app.post("/api/checksaved", function(request, response) {
-  console.log('check is saved for post_id ' + request.body.post_id);
+  console.log("check is saved for post_id " + request.body.post_id);
   pool.connect((err, db, done) => {
     done();
     if (err) {
@@ -245,6 +245,12 @@ app.post("/api/unsave", function(request, response) {
       );
     }
   });
+});
+
+app.use(express.static("build"));
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/dist/index.html"));
 });
 
 app.listen(PORT, "0.0.0.0", function() {
