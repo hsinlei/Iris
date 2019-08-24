@@ -64,7 +64,8 @@ class Results extends React.Component {
     this.state = {
       checked: false,
       dataLoaded: false,
-     moreData: false,
+      showMore: false,
+      moreData: [],
       numUpvotes: 0
     };
     // Define state numUpvotes, checked, and dataLoaded
@@ -112,14 +113,31 @@ class Results extends React.Component {
   }
 
 	handleExpand = event => {
-		this.setState( prevState=> {
-			return {moreData: !prevState.moreData}
-    });
     
+    const snippet_request = new Request("http://localhost:8002/api/getsnippet", {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify({
+        url: this.props.data.formattedUrl
+      })
+    });
+    console.log("snippet request");
+    fetch(snippet_request)
+      .then(response => {
 
-  request('http://stackabuse.com', function(err, res, body) {  
-    console.log(body);
-});
+        response.json().then(data => {
+          this.setState( prevState=> {
+            return {
+              moreData: data.text.abstract,
+              showMore: !prevState.showMore}
+          });
+          console.log(data)
+        });
+      })
+      .catch(function(err) {
+        console.log("caught :" + err);
+      });
+
     /*
     axios({
       method: "GET",
@@ -197,36 +215,10 @@ class Results extends React.Component {
 						<div><SmallLink href={this.props.data.formattedUrl}>{this.props.data.displayLink} </SmallLink></div>
 						<div style={{color:"#616161"}}>{this.props.data.snippet } </div>
 
-						{this.state.moreData && 
+						{this.state.showMore && this.state.moreData.length != 0 &&
 							<div>
-							<div>
-								{/*Object.entries(this.props.data.pagemap.metatags[0]).map(function(idx, d) {
-									return (<div>{idx}</div>)
-								})*/
-								this.props.data.pagemap.metatags[0].citation_title
-							}
-							</div> <div>
-								{/*Object.entries(this.props.data.pagemap.metatags[0]).map(function(idx, d) {
-									return (<div>{idx}</div>)
-								})*/
-								this.props.data.pagemap.metatags[0].citation_journal_title + ". " + this.props.data.snippet + ". " + this.props.data.snippet + ". " + 
-								this.props.data.pagemap.metatags[0].citation_title
-							}
-							</div> </div>}
-							{this.state.moreData && 
-							<div>
-							<div>
-								{
-								this.props.data.pagemap.metatags[0].citation_title
-							}
-							</div> <div>
-								{/*Object.entries(this.props.data.pagemap.metatags[0]).map(function(idx, d) {
-									return (<div>{idx}</div>)
-								})*/
-								this.props.data.pagemap.metatags[0].citation_journal_title + ". " + this.props.data.snippet + ". " + this.props.data.snippet + ". " + 
-								this.props.data.pagemap.metatags[0].citation_title
-							}
-							</div> </div>}
+                {this.state.moreData}
+              </div>}
 
 						<Flex className={resultItemDetails} style={{ paddingTop: 5, marginTop: 5 }}>
 							{!!data.parent && (

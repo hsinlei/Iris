@@ -12,6 +12,8 @@ let moment = require("moment");
 // var path = require("path");
 // var UserWithDb = require(path.resolve(__dirname, "./User.js"));
 
+const osmosis = require('osmosis');
+
 let app = express();
 let pool = new pg.Pool({
   port: 5432,
@@ -105,6 +107,18 @@ app.post("/api/getsavedcount", function(request, response) {
   });
 });
 
+app.post("/api/getsnippet", function(request, response) {
+  console.log("get snippet" + request.body.url);
+
+  osmosis
+  .get(request.body.url)
+  .set({'abstract': ['.abstract .abstr p']})
+  .data(function(data) {
+      console.log(data);
+      response.status(201).send({text: data});
+  })
+});
+
 // user login
 app.post("/api/loginuser", function(request, response) {
   console.log("loginuser requests = " + request.body.email);
@@ -166,7 +180,6 @@ app.post("/api/checksaved", function(request, response) {
   pool.connect((err, db, done) => {
     done();
     if (err) {
-      return console.log(err);
     } else {
       db.query(
         "SELECT COUNT(*) FROM saves WHERE post_id = " +
@@ -175,7 +188,6 @@ app.post("/api/checksaved", function(request, response) {
           request.body.user_id,
         (err, table) => {
           if (err) {
-            return console.log(err);
           } else {
             // console.log("query succeeded");
             // console.log(table);
