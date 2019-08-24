@@ -4,6 +4,8 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
+const API_SERVER = "http://localhost:8002";
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -19,7 +21,7 @@ class Login extends React.Component {
     if (login_str) {
       const login = JSON.parse(login_str);
       const log_in_request = new Request(
-        "http://localhost:8002/api/loginuser",
+        API_SERVER + "/api/loginuser",
         {
           method: "POST",
           headers: new Headers({ "Content-Type": "application/json" }),
@@ -58,7 +60,7 @@ class Login extends React.Component {
   }
   // TODO: change the submit into sign-up or log-in
   handleSubmit(event) {
-    const log_in_request = new Request("http://localhost:8002/api/loginuser", {
+    const log_in_request = new Request(API_SERVER + "/api/loginuser", {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
       body: JSON.stringify({
