@@ -16,10 +16,8 @@ let app = express();
 let pool = new pg.Pool({
   port: 5432,
   max: 10,
-  host: "database-iris.ceyastzlv2lg.us-west-1.rds.amazonaws.com",
-  database: "postgres",
-  user: "postgres",
-  password: "hacklodge2019"
+  host: "localhost",
+  database: "postgres"
 });
 
 app.use(bodyParser.json());
