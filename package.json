@@ -18,7 +18,7 @@
     "emotion": "*",
     "html-webpack-plugin": "^3.2.0",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "morgan": "^1.9.1",
     "needle": "^2.4.0",
     "nodemon": "^1.19.1",
