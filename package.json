@@ -16,7 +16,7 @@
     "bcrypt": "^3.0.6",
     "bootstrap": "^4.3.1",
     "emotion": "*",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
@@ -51,7 +51,7 @@
     "prettier": "^1.18.2",
     "style-loader": "^1.0.0",
     "webpack": "^4.39.2",
-    "webpack-cli": "^3.2.0",
+    "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.1.14"
   },
   "scripts": {
