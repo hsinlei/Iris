@@ -17,7 +17,7 @@
     "bootstrap": "^4.3.1",
     "emotion": "*",
     "html-webpack-plugin": "^3.2.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "needle": "^2.4.0",
